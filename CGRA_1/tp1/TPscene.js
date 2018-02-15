@@ -20,6 +20,7 @@ class TPscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.obj = new MyObject(this);
+        this.cube = new MyUnitCube(this); //4.3
 
 
         // NOTE: OpenGL transformation matrices are transposed
@@ -98,26 +99,12 @@ class TPscene extends CGFscene {
 
         // ---- BEGIN Geometric transformation section
 
-        this.pushMatrix(); //3.5
-        this.translate(0, 5, 0); //3.4  (translação)
-        this.obj.display(); //3.3  (primeiro objeto)
-
-        // Multiplication of the previous transformations
-        //this.multMatrix(this.tra);     // GT = GT * tra
-        //this.multMatrix(this.rot);     // GT = GT * rot
-        //this.multMatrix(this.sca);     // GT = GT * sca
-
-        this.popMatrix();  //3.5
-        this.scale(5, 2, 1); //3.1  (escalamento)
-        this.translate(5, 0, 2); //3.1  (translação)
-        //this.rotate(30*this.deg2rad, 0, 1, 0); //3.1
-
         // ---- END Geometric transformation section
 
 
         // ---- BEGIN Primitive drawing section
 
-        this.obj.display(); // (segundo objeto)
+        this.cube.display();
 
         // ---- END Primitive drawing section
 
