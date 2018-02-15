@@ -1,13 +1,10 @@
-class TPscene extends CGFscene
-{
-    constructor()
-    {
+class TPscene extends CGFscene {
+    constructor() {
         super();
     }
 
 
-    init(application)
-    {
+    init(application) {
         super.init(application);
 
         this.initCameras();
@@ -21,7 +18,7 @@ class TPscene extends CGFscene
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.axis=new CGFaxis(this);
+        this.axis = new CGFaxis(this);
         this.obj = new MyObject(this);
 
 
@@ -29,10 +26,10 @@ class TPscene extends CGFscene
 
         // Translate (5, 0, 2)
 
-        this.tra = [  1.0, 0.0, 0.0, 0.0,
+        this.tra = [ 1.0, 0.0, 0.0, 0.0,
                     0.0, 1.0, 0.0, 0.0,
                     0.0, 0.0, 1.0, 0.0,
-                    5.0, 0.0, 2.0, 1.0  ];
+                    5.0, 0.0, 2.0, 1.0 ];
 
         // Rotate 30 degrees around Y
         // These constants would normally be pre-computed at initialization time
@@ -53,12 +50,11 @@ class TPscene extends CGFscene
         this.sca = [ 5.0, 0.0, 0.0, 0.0,
                     0.0, 2.0, 0.0, 0.0,
                     0.0, 0.0, 1.0, 0.0,
-                    0.0, 0.0, 0.0, 1.0  ];
+                    0.0, 0.0, 0.0, 1.0 ];
 
     };
 
-    initLights()
-    {
+    initLights() {
 
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
@@ -67,21 +63,18 @@ class TPscene extends CGFscene
 
     };
 
-    initCameras()
-    {
+    initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     };
 
-    setDefaultAppearance()
-    {
+    setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     };
 
-    display()
-    {
+    display() {
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -105,17 +98,26 @@ class TPscene extends CGFscene
 
         // ---- BEGIN Geometric transformation section
 
+        this.pushMatrix(); //3.5
+        this.translate(0, 5, 0); //3.4  (translação)
+        this.obj.display(); //3.3  (primeiro objeto)
+
         // Multiplication of the previous transformations
-        this.multMatrix(this.tra);     // GT = GT * tra
-        this.multMatrix(this.rot);     // GT = GT * rot
-        this.multMatrix(this.sca);     // GT = GT * sca
+        //this.multMatrix(this.tra);     // GT = GT * tra
+        //this.multMatrix(this.rot);     // GT = GT * rot
+        //this.multMatrix(this.sca);     // GT = GT * sca
+
+        this.popMatrix();  //3.5
+        this.scale(5, 2, 1); //3.1  (escalamento)
+        this.translate(5, 0, 2); //3.1  (translação)
+        //this.rotate(30*this.deg2rad, 0, 1, 0); //3.1
 
         // ---- END Geometric transformation section
 
 
         // ---- BEGIN Primitive drawing section
 
-        this.obj.display();
+        this.obj.display(); // (segundo objeto)
 
         // ---- END Primitive drawing section
 
