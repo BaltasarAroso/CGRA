@@ -19,9 +19,8 @@ class TPscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.obj = new MyObject(this);
-        this.cube = new MyUnitCube(this); //4.3
-        this.cubeQuad = new MyUnitCubeQuad(this); //4.9
+        this.table = new MyTable(this);
+        this.floor = new MyFloor(this);
 
 
         // NOTE: OpenGL transformation matrices are transposed
@@ -97,10 +96,12 @@ class TPscene extends CGFscene {
 
         // ---- END Background, camera and axis setup
 
-        this.cube.display(); //4.3
+        this.pushMatrix();
+        this.translate(1.75, 0, 1.5);
+        this.table.display();
 
-        this.translate(2, 0, 0);
-        this.cubeQuad.display(); //4.9
+        this.popMatrix();
+        this.floor.display();
 
 
     };

@@ -1,3 +1,8 @@
+/**
+ * MyUnitCubeQuad
+ * @param gl {WebGLRenderingContext}
+ * @constructor
+ */
 class MyUnitCubeQuad extends CGFobject {
   constructor(scene) {
     super(scene);
@@ -16,7 +21,6 @@ class MyUnitCubeQuad extends CGFobject {
   };
 
   display() {
-    this.scene.pushMatrix();
     this.scene.translate(0, 0, 0.5);
     this.front.display();
 
