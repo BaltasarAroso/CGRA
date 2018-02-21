@@ -4,8 +4,7 @@
  * @constructor
  */
 
-class MyFloor extends CGFobject
-{
+class MyFloor extends CGFobject {
 	constructor(scene) {
 		super(scene);
     this.floor = new MyUnitCubeQuad(this.scene);
