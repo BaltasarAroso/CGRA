@@ -7,7 +7,7 @@ var BOARD_A_DIVISIONS = 30;
 var BOARD_B_DIVISIONS = 100;
 
 var PRISM_SLICES = 6;
-var PRISM_STACKS = 20;
+var PRISM_STACKS = 4;
 
 class LightingScene extends CGFscene
 {
@@ -116,12 +116,7 @@ class LightingScene extends CGFscene
 
 		// ---- BEGIN Scene drawing section
 
-		this.pushMatrix();
-			this.translate(4, 0, 4);
-			this.rotate(-90 * degToRad, 1, 0, 0);
-			this.scale(1, 1, 5);
-			this.prism.display();
-		this.popMatrix();
+		this.prism.display();
 
 		// ---- END Scene drawing section
 	};
