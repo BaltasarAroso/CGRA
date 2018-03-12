@@ -6,9 +6,6 @@ var BOARD_HEIGHT = 4.0;
 var BOARD_A_DIVISIONS = 30;
 var BOARD_B_DIVISIONS = 100;
 
-var PRISM_SLICES = 6;
-var PRISM_STACKS = 20;
-
 class LightingScene extends CGFscene
 {
 	constructor()
@@ -33,11 +30,46 @@ class LightingScene extends CGFscene
 		this.axis = new CGFaxis(this);
 
 		// Scene elements
+		this.table = new MyTable(this);
+		this.wall = new Plane(this);
+		this.floor = new MyQuad(this);
 
-		this.prism = new MyPrism(this, PRISM_SLICES, PRISM_STACKS);
+		this.boardA = new Plane(this, BOARD_A_DIVISIONS);
+		this.boardB = new Plane(this, BOARD_B_DIVISIONS);
+
+		// PL3 - 1.3
+		this.prism = new MyPrism(this, 8, 20);
+
+		// PL3 - 2.3
+		this.cylinder = new MyCylinder(this, 8, 20);
+
+		// PL3 - extra
+		this.lamp = new MyLamp(this, 8, 20);
 
 		// Materials
 		this.materialDefault = new CGFappearance(this);
+
+		this.materialA = new CGFappearance(this);
+		this.materialA.setAmbient(0.3,0.3,0.3,1);
+		this.materialA.setDiffuse(0.6,0.6,0.6,1);
+		this.materialA.setSpecular(0,0.2,0.8,1);
+		this.materialA.setShininess(120);
+
+		this.materialB = new CGFappearance(this);
+		this.materialB.setAmbient(0.3,0.3,0.3,1);
+		this.materialB.setDiffuse(0.6,0.6,0.6,1);
+		this.materialB.setSpecular(0.8,0.8,0.8,1);
+		this.materialB.setShininess(120);
+
+		this.materialFloor = new CGFappearance(this);
+		this.materialFloor.setSpecular(0.3,0.3,0.3,1);
+		this.materialFloor.setAmbient(0.933, 0.921, 0.850,1);
+		this.materialFloor.setDiffuse(0.933, 0.921, 0.850,1);
+
+		this.materialWall = new CGFappearance(this);
+		this.materialWall.setSpecular(0.1,0.1,0.1,1);
+		this.materialWall.setAmbient(0.313, 0.466, 0.525,1);
+		this.materialWall.setDiffuse(0.313, 0.466, 0.525,1);
 
 	};
 
@@ -116,11 +148,88 @@ class LightingScene extends CGFscene
 
 		// ---- BEGIN Scene drawing section
 
+		// Floor
 		this.pushMatrix();
-			this.translate(4, 0, 4);
+			this.translate(7.5, 0, 7.5);
+			this.rotate(-90 * degToRad, 1, 0, 0);
+			this.scale(15, 15, 0.2);
+
+			this.materialFloor.apply();
+			this.floor.display();
+		this.popMatrix();
+
+		// Left Wall
+		this.pushMatrix();
+			this.translate(0, 4, 7.5);
+			this.rotate(90 * degToRad, 0, 1, 0);
+			this.scale(15, 8, 0.2);
+			this.materialWall.apply();
+			this.wall.display();
+		this.popMatrix();
+
+		// Plane Wall
+		this.pushMatrix();
+			this.translate(7.5, 4, 0);
+			this.scale(15, 8, 0.2);
+			this.wall.display();
+		this.popMatrix();
+
+		// First Table
+		this.pushMatrix();
+			this.translate(5, 0, 8);
+			this.table.display();
+		this.popMatrix();
+
+		// Second Table
+		this.pushMatrix();
+			this.translate(12, 0, 8);
+			this.materialWood.apply();
+			this.table.display();
+		this.popMatrix();
+
+		// Board A
+		this.pushMatrix();
+			this.translate(4, 4.5, 0.2);
+			this.scale(BOARD_WIDTH, BOARD_HEIGHT, 1);
+
+			this.materialA.apply();
+			this.boardA.display();
+		this.popMatrix();
+
+		// Board B
+		this.pushMatrix();
+			this.translate(10.5, 4.5, 0.2);
+			this.scale(BOARD_WIDTH, BOARD_HEIGHT, 1);
+
+			this.materialB.apply();
+			this.boardB.display();
+		this.popMatrix();
+
+		// PL3 - 1.3
+		// MyPrism
+		this.pushMatrix();
+			this.translate(1, 0, 4);
 			this.rotate(-90 * degToRad, 1, 0, 0);
 			this.scale(1, 1, 5);
 			this.prism.display();
+		this.popMatrix();
+
+		// PL3 - 2.3
+		// MyCylinder
+		this.pushMatrix();
+			this.translate(1, 0, 12);
+			this.rotate(-90 * degToRad, 1, 0, 0);
+			this.scale(1, 1, 5);
+			this.cylinder.display();
+		this.popMatrix();
+
+		// PL3 - extra
+		// MyLamp
+		this.pushMatrix();
+			this.translate(7.5, 8, 7.5);
+			this.rotate(-180 * degToRad, 1, 0, 0);
+			this.scale(1, 1, 1);
+			this.lamp.display();
 		this.popMatrix();
 
 		// ---- END Scene drawing section

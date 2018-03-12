@@ -9,70 +9,56 @@ class MyPrism extends CGFobject {
 		this.slices = slices;
 		this.stacks = stacks;
 
+		this.vertices = [];
+		this.indices = [];
+		this.normals = [];
+
+		this.angle = 2*Math.PI/this.slices;
+
 		this.initBuffers();
 	};
 
 	initBuffers() {
 
-		this.vertices = [];
-		this.indices = [];
-		this.normals = [];
+		for(var z = 0; z <= this.stacks; z++) {
+			for(var i = 0; i < this.slices; i++) {
 
-		let c1 = 0;
-		let c2 = 0;
+				this.vertices.push(
+					Math.cos(i*this.angle),
+					Math.sin(i*this.angle),
+					z/this.stacks
+				);
+				this.vertices.push(
+					Math.cos((i+1)*this.angle),
+					Math.sin((i+1)*this.angle),
+					z/this.stacks
+				);
 
-		this.stacks = 2;
+				if(z > 0) {
+					this.indices.push(
+						2*i + (z-1)*2*this.slices,
+						2*i + 1 + (z-1)*2*this.slices,
+						2*i + 2*this.slices + (z-1)*2*this.slices
+					);
+					this.indices.push(
+						2*i + 1 + 2*this.slices + (z-1)*2*this.slices,
+						2*i + 2*this.slices + (z-1)*2*this.slices,
+						2*i + 1 + (z-1)*2*this.slices
+					);
+				}
 
-		for(var i = 0; i < (2*3) * this.slices * this.stacks; i = i + (2*3)) {
-			for(var z = 0; z < (1-1/this.stacks); z = z + 2 * 1/this.stacks) {
-				this.vertices[i] = Math.cos(c1 * (2*Math.PI/this.slices));
-				this.vertices[i + 1] = Math.sin(c1 * (2*Math.PI/this.slices));
-				this.vertices[i + 2] = z;
+				this.normals.push(
+					Math.cos((i+i+1)*0.5*this.angle),
+					Math.sin((i+i+1)*0.5*this.angle),
+					0
+				);
+				this.normals.push(
+					Math.cos((i+i+1)*0.5*this.angle),
+					Math.sin((i+i+1)*0.5*this.angle),
+					0
+				);
 
-				this.vertices[i + 3] = Math.cos((c1 + 1) * (2*Math.PI/this.slices));
-				this.vertices[i + 4] = Math.sin((c1 + 1) * (2*Math.PI/this.slices));
-				this.vertices[i + 5] = z;
-
-
-				this.vertices[i + 2*3*this.slices] = Math.cos(c1 * (2*Math.PI/this.slices));
-				this.vertices[i + 1 + 2*3*this.slices] = Math.sin(c1 * (2*Math.PI/this.slices));
-				this.vertices[i + 2 + 2*3*this.slices] = z + 1/this.stacks;
-
-				this.vertices[i + 3 + 2*3*this.slices] = Math.cos((c1 + 1) * (2*Math.PI/this.slices));
-				this.vertices[i + 4 + 2*3*this.slices] = Math.sin((c1 + 1) * (2*Math.PI/this.slices));
-				this.vertices[i + 5 + 2*3*this.slices] = z + 1/this.stacks;
 			}
-
-
-			this.indices[i] = c2;
-			this.indices[i + 1] = c2 + 1;
-			this.indices[i + 2] = c2 + 2 * this.slices;
-
-			this.indices[i + 3] = c2 + 1 + 2 * this.slices;
-			this.indices[i + 4] = c2 + 2 * this.slices;
-			this.indices[i + 5] = c2 + 1;
-
-
-
-			this.normals[i] = 1;
-			this.normals[i + 1] = 1;
-			this.normals[i + 2] = 0;
-
-			this.normals[i + 3] = 1;
-			this.normals[i + 4] = 1;
-			this.normals[i + 5] = 0;
-
-
-			this.normals[i + 2 * 3 * this.slices] = 1;
-			this.normals[i + 1 + 2 * 3 * this.slices] = 1;
-			this.normals[i + 2 + 2 * 3 * this.slices] = 0;
-
-			this.normals[i + 3 + 2 * 3 * this.slices] = 1;
-			this.normals[i + 4 + 2 * 3 * this.slices] = 1;
-			this.normals[i + 5 + 2 * 3 * this.slices] = 0;
-
-			c1++;
-			c2=c2+2;
 		}
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
