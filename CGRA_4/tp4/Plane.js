@@ -1,8 +1,7 @@
 /** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
 class Plane extends CGFobject {
 
-	constructor(scene, nrDivs)
-	{
+	constructor(scene, nrDivs) {
 		super(scene);
 
 		// nrDivs = 1 if not provided
@@ -14,8 +13,7 @@ class Plane extends CGFobject {
 		this.initBuffers();
 	};
 
-	initBuffers()
-	{
+	initBuffers() {
 		/* example for nrDivs = 3 :
 		(numbers represent index of point in vertices array)
 
@@ -24,7 +22,7 @@ class Plane extends CGFobject {
 						|
 		0    1  |  2    3
 						|
-		4	 5		|  6    7
+		4	 	 5	|  6    7
 		--------|--------------> x
 		8    9  |  10  11
 						|
@@ -37,7 +35,7 @@ class Plane extends CGFobject {
 		this.normals = [];
 
 		// Uncomment below to init texCoords
-		//this.texCoords = [];
+		this.texCoords = [];
 
 		var yCoord = 0.5;
 
@@ -51,10 +49,11 @@ class Plane extends CGFobject {
 				// As this plane is being drawn on the xy plane, the normal to the plane will be along the positive z axis.
 				// So all the vertices will have the same normal, (0, 0, 1).
 
-				this.normals.push(0,0,1);
+				this.normals.push(0, 0, 1);
 
 				// texCoords should be computed here; uncomment and fill the blanks
-				// this.texCoords.push(..., ...);
+				// PL4 - 3.1
+				this.texCoords.push(xCoord + 0.5, 0.5 - yCoord);
 
 				xCoord += this.patchLength;
 			}
