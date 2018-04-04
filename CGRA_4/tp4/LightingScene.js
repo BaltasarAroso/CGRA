@@ -36,8 +36,14 @@ class LightingScene extends CGFscene {
 		this.planeWall = new Plane(this);
 		this.floor = new MyQuad(this, 0, 10, 0, 12);
 
-		this.boardA = new Plane(this, BOARD_A_DIVISIONS);
-		this.boardB = new Plane(this, BOARD_B_DIVISIONS);
+		// PL4 - 3.3
+		var slidesUrl = "../resources/images/slides.png";
+		var boardUrl = "../resources/images/board.png"
+		var slidesImg = new Image();
+		var boardImg = new Image();
+
+		this.boardA = new Plane(this, BOARD_A_DIVISIONS, 512, 512); //slides
+		this.boardB = new Plane(this, BOARD_B_DIVISIONS, 372, 512); //board
 
 		// PL3 - 1.3
 		this.prism = new MyPrism(this, 8, 20);
@@ -57,7 +63,8 @@ class LightingScene extends CGFscene {
 		this.slidesAppearance.setSpecular(0.1,0.1,0.1,1);
 		this.slidesAppearance.setShininess(1);
 		// PL4 - 3.2
-		this.slidesAppearance.loadTexture("../resources/images/slides.png");
+		this.slidesAppearance.loadTexture(slidesUrl);
+
 
 		this.boardAppearance = new CGFappearance(this);
 		this.boardAppearance.setAmbient(0.3,0.3,0.3,1);
@@ -65,7 +72,7 @@ class LightingScene extends CGFscene {
 		this.boardAppearance.setSpecular(0.7,0.7,0.7,1);
 		this.boardAppearance.setShininess(120);
 		// PL4 - 3.2
-		this.boardAppearance.loadTexture("../resources/images/board.png");
+		this.boardAppearance.loadTexture(boardUrl);
 
 		this.floorAppearance = new CGFappearance(this);
 		// PL4 - 2.2
@@ -85,13 +92,11 @@ class LightingScene extends CGFscene {
 
 	};
 
-	initCameras()
-	{
+	initCameras() {
 		this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
 	};
 
-	initLights()
-	{
+	initLights() {
 		//this.setGlobalAmbientLight(0.5,0.5,0.5, 1.0);
 		this.setGlobalAmbientLight(0,0,0, 1.0);
 
@@ -135,15 +140,13 @@ class LightingScene extends CGFscene {
 		this.lights[4].enable();
 	};
 
-	updateLights()
-	{
+	updateLights() {
 		for (var i = 0; i < this.lights.length; i++)
 			this.lights[i].update();
 	}
 
 
-	display()
-	{
+	display() {
 		// ---- BEGIN Background, camera and axis setup
 
 		// Clear image and depth buffer everytime we update the scene

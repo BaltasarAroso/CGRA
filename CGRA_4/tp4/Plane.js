@@ -1,7 +1,7 @@
 /** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
 class Plane extends CGFobject {
 
-	constructor(scene, nrDivs) {
+	constructor(scene, nrDivs, height, width) {
 		super(scene);
 
 		// nrDivs = 1 if not provided
@@ -9,6 +9,12 @@ class Plane extends CGFobject {
 
 		this.nrDivs = nrDivs;
 		this.patchLength = 1.0 / nrDivs;
+
+		// PL4 - 3.3
+		this.height = height;
+		this.width = width;
+
+		(width > height) ? (this.wider = true) : (this.wider = false);
 
 		this.initBuffers();
 	};
@@ -39,11 +45,9 @@ class Plane extends CGFobject {
 
 		var yCoord = 0.5;
 
-		for (var j = 0; j <= this.nrDivs; j++)
-		{
+		for (var j = 0; j <= this.nrDivs; j++) {
 			var xCoord = -0.5;
-			for (var i = 0; i <= this.nrDivs; i++)
-			{
+			for (var i = 0; i <= this.nrDivs; i++) {
 				this.vertices.push(xCoord, yCoord, 0);
 
 				// As this plane is being drawn on the xy plane, the normal to the plane will be along the positive z axis.
@@ -53,7 +57,13 @@ class Plane extends CGFobject {
 
 				// texCoords should be computed here; uncomment and fill the blanks
 				// PL4 - 3.1
-				this.texCoords.push(xCoord + 0.5, 0.5 - yCoord);
+				if(this.wider) {
+					this.texCoords.push(xCoord*(this.width/this.height) + 0.5, 0.5 - yCoord);
+				} else {
+					this.texCoords.push(xCoord + 0.5, 0.5 - yCoord*(this.height/this.width));
+				}
+
+				//this.texCoords.push(xCoord + 0.5, 0.5 - yCoord);
 
 				xCoord += this.patchLength;
 			}
@@ -75,17 +85,14 @@ class Plane extends CGFobject {
 		var ind=0;
 
 
-		for (var j = 0; j < this.nrDivs; j++)
-		{
-			for (var i = 0; i <= this.nrDivs; i++)
-			{
+		for (var j = 0; j < this.nrDivs; j++) {
+			for (var i = 0; i <= this.nrDivs; i++) {
 				this.indices.push(ind);
 				this.indices.push(ind+this.nrDivs+1);
 
 				ind++;
 			}
-			if (j+1 < this.nrDivs)
-			{
+			if (j+1 < this.nrDivs) {
 				// Extra vertices to create degenerate triangles so that the strip can wrap on the next row
 				// degenerate triangles will not generate fragments
 				this.indices.push(ind+this.nrDivs);
