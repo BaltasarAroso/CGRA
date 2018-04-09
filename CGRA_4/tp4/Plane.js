@@ -1,20 +1,20 @@
 /** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
 class Plane extends CGFobject {
 
-	constructor(scene, nrDivs, height, width) {
+	constructor(scene, nrDivs, width, height, ph_width, ph_height) {
 		super(scene);
 
 		// nrDivs = 1 if not provided
 		nrDivs = typeof nrDivs !== 'undefined' ? nrDivs : 1;
-
+		
 		this.nrDivs = nrDivs;
 		this.patchLength = 1.0 / nrDivs;
 
 		// PL4 - 3.3
-		this.height = height;
-		this.width = width;
+		this.width = width / ph_width;  // ph - placeholder
+		this.height = height / ph_height;
 
-		(width > height) ? (this.wider = true) : (this.wider = false);
+		(this.width > this.height) ? (this.wider = true) : (this.wider = false);
 
 		this.initBuffers();
 	};
@@ -58,9 +58,9 @@ class Plane extends CGFobject {
 				// texCoords should be computed here; uncomment and fill the blanks
 				// PL4 - 3.1
 				if(this.wider) {
-					this.texCoords.push(xCoord*(this.width/this.height) + 0.5, 0.5 - yCoord);
+					this.texCoords.push(xCoord + 0.5, 0.5 - yCoord*(this.width/this.height));
 				} else {
-					this.texCoords.push(xCoord + 0.5, 0.5 - yCoord*(this.height/this.width));
+					this.texCoords.push(xCoord*(this.height/this.width) + 0.5, 0.5 - yCoord);
 				}
 
 				//this.texCoords.push(xCoord + 0.5, 0.5 - yCoord);

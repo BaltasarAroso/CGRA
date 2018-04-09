@@ -42,8 +42,8 @@ class LightingScene extends CGFscene {
 		var slidesImg = new Image();
 		var boardImg = new Image();
 
-		this.boardA = new Plane(this, BOARD_A_DIVISIONS, 512, 512); //slides
-		this.boardB = new Plane(this, BOARD_B_DIVISIONS, 372, 512); //board
+		this.boardA = new Plane(this, BOARD_A_DIVISIONS, 512, 512, BOARD_WIDTH, BOARD_HEIGHT); //slides
+		this.boardB = new Plane(this, BOARD_B_DIVISIONS, 512, 372, BOARD_WIDTH, BOARD_HEIGHT); //board
 
 		// PL3 - 1.3
 		this.prism = new MyPrism(this, 8, 20);
@@ -64,6 +64,7 @@ class LightingScene extends CGFscene {
 		this.slidesAppearance.setShininess(1);
 		// PL4 - 3.2
 		this.slidesAppearance.loadTexture(slidesUrl);
+		this.slidesAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
 
 		this.boardAppearance = new CGFappearance(this);
@@ -73,6 +74,7 @@ class LightingScene extends CGFscene {
 		this.boardAppearance.setShininess(120);
 		// PL4 - 3.2
 		this.boardAppearance.loadTexture(boardUrl);
+		this.boardAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
 		this.floorAppearance = new CGFappearance(this);
 		// PL4 - 2.2
