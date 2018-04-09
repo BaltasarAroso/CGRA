@@ -64,6 +64,7 @@ class LightingScene extends CGFscene {
 		this.slidesAppearance.setShininess(1);
 		// PL4 - 3.2
 		this.slidesAppearance.loadTexture(slidesUrl);
+		// PL4 - 3.3
 		this.slidesAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
 
@@ -74,6 +75,7 @@ class LightingScene extends CGFscene {
 		this.boardAppearance.setShininess(120);
 		// PL4 - 3.2
 		this.boardAppearance.loadTexture(boardUrl);
+		// PL4 - 3.3
 		this.boardAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
 		this.floorAppearance = new CGFappearance(this);
@@ -91,6 +93,9 @@ class LightingScene extends CGFscene {
 		this.windowAppearance.loadTexture("../resources/images/window.png");
 		this.windowAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
+		// PL4 - extra
+		this.columnAppearance = new CGFappearance(this);
+		this.columnAppearance.loadTexture("../resources/images/stone_column.jpg");
 
 	};
 
@@ -240,6 +245,9 @@ class LightingScene extends CGFscene {
 			this.translate(1, 0, 4);
 			this.rotate(-90 * degToRad, 1, 0, 0);
 			this.scale(1, 1, 5);
+
+			// PL4 - extra
+			this.columnAppearance.apply();
 			this.prism.display();
 		this.popMatrix();
 
@@ -249,6 +257,9 @@ class LightingScene extends CGFscene {
 			this.translate(1, 0, 12);
 			this.rotate(-90 * degToRad, 1, 0, 0);
 			this.scale(1, 1, 5);
+
+			//PL4 - extra
+			// this.columnAppearance.apply();
 			this.cylinder.display();
 		this.popMatrix();
 

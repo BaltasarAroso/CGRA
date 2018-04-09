@@ -9,9 +9,13 @@ class MyPrism extends CGFobject {
 		this.slices = slices;
 		this.stacks = stacks;
 
+		// this.slices = 2;
+		// this.stacks = 1;
+
 		this.vertices = [];
 		this.indices = [];
 		this.normals = [];
+		this.texCoords = [];
 
 		this.angle = 2*Math.PI/this.slices;
 
@@ -33,6 +37,10 @@ class MyPrism extends CGFobject {
 					Math.sin((i+1)*this.angle),
 					z/this.stacks
 				);
+
+				//PL4 - extra
+				this.texCoords.push(i/this.slices, z/this.stacks);
+				this.texCoords.push((i+1)/this.slices, z/this.stacks);
 
 				if(z > 0) {
 					this.indices.push(

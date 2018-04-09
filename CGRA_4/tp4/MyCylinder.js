@@ -12,6 +12,7 @@ class MyCylinder extends CGFobject {
 		this.vertices = [];
 		this.indices = [];
 		this.normals = [];
+		this.texCoords = [];
 
 		this.angle = 2*Math.PI/this.slices;
 
@@ -28,6 +29,9 @@ class MyCylinder extends CGFobject {
 					Math.sin(i*this.angle),
 					z/this.stacks
 				);
+
+				//PL4 - extra
+				this.texCoords.push(((i % 2 == 0) ? 0 : 1), z/this.stacks);
 
 				if(z > 0) {
 					if(i == this.slices - 1) {
