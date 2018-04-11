@@ -11,7 +11,7 @@ class MyCircle extends CGFobject {
 		this.vertices = [];
 		this.indices = [];
 		this.normals = [];
-		// this.texCoords = [];
+		this.texCoords = [];
 
 		this.angle = 2*Math.PI/this.slices;
 
@@ -19,14 +19,13 @@ class MyCircle extends CGFobject {
 	};
 
 	initBuffers() {
-
 		//center point
 		this.vertices.push(0, 0, 0);
 		this.normals.push(0, 0, 1);
 		this.texCoords.push(0.5, 0.5);
 		for(var i = 0; i <= this.slices; i++) {
 			this.vertices.push(Math.cos(i*this.angle), Math.sin(i*this.angle), 0);
-
+			this.texCoords.push(0.5 + 0.5*Math.cos(i*this.angle), 0.5 - 0.5*Math.sin(i*this.angle));
 			// this.normals.push(Math.cos(i*this.angle), Math.sin(i*this.angle), 0); //pointing outward
 			this.normals.push(0, 0, 1);  //pointing forward (in z)
 
