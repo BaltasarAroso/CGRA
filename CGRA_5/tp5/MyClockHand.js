@@ -1,8 +1,8 @@
 /**
- * MyCircle
+ * MyClockHand
  * @constructor
  */
-class MyCircle extends CGFobject {
+class MyClockHand extends CGFobject {
 	constructor(scene, slices) {
 		super(scene);
 
@@ -23,7 +23,6 @@ class MyCircle extends CGFobject {
 		//center point
 		this.vertices.push(0, 0, 0);
 		this.normals.push(0, 0, 1);
-		this.texCoords.push(0.5, 0.5);
 		for(var i = 0; i <= this.slices; i++) {
 			this.vertices.push(Math.cos(i*this.angle), Math.sin(i*this.angle), 0);
 
