@@ -279,7 +279,6 @@ class LightingScene extends CGFscene {
 		this.pushMatrix();
 			this.translate(7.25, 7.25, 0.125);
 			this.scale(0.5, 0.5, 1);
-			//this.materialDefault.apply();
 			this.clock.display();
 		this.popMatrix();
 
