@@ -11,7 +11,7 @@ class MyCircle extends CGFobject {
 		this.vertices = [];
 		this.indices = [];
 		this.normals = [];
-		this.texCoords = [];
+		// this.texCoords = [];
 
 		this.angle = 2*Math.PI/this.slices;
 

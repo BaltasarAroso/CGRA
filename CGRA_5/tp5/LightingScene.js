@@ -54,6 +54,9 @@ class LightingScene extends CGFscene {
 		// PL3 - extra
 		this.lamp = new MyLamp(this, 8, 20);
 
+		// PL5 - 1.1
+		this.clock = new MyClock(this, 12);
+
 		// Materials
 		this.materialDefault = new CGFappearance(this);
 
@@ -270,6 +273,15 @@ class LightingScene extends CGFscene {
 			this.rotate(-180 * degToRad, 1, 0, 0);
 			this.scale(1, 1, 1);
 			this.lamp.display();
+		this.popMatrix();
+
+		// PL5 - 1.1
+		this.pushMatrix();
+			this.translate(7.25, 7.25, 0.125);
+			this.scale(0.5, 0.5, 1);
+
+			this.materialDefault.apply();
+			this.clock.display();
 		this.popMatrix();
 
 		// ---- END Scene drawing section
