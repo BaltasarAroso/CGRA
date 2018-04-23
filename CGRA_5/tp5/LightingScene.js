@@ -1,159 +1,183 @@
-var degToRad = Math.PI / 180.0;
+const degToRad = Math.PI / 180.0;
 
-var BOARD_WIDTH = 6.0;
-var BOARD_HEIGHT = 4.0;
+const BOARD_WIDTH = 6.0;
+const BOARD_HEIGHT = 4.0;
 
-var BOARD_A_DIVISIONS = 30;
-var BOARD_B_DIVISIONS = 100;
+const BOARD_A_DIVISIONS = 30;
+const BOARD_B_DIVISIONS = 100;
 
 class LightingScene extends CGFscene {
-	constructor() {
-		super();
-	};
+    constructor() {
+        super();
+    };
 
-	init(application) {
-		super.init(application);
+    init(application) {
+        super.init(application);
 
-		this.initCameras();
+        this.initCameras();
 
-		this.initLights();
+        this.initLights();
 
-		this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		this.gl.clearDepth(100.0);
-		this.gl.enable(this.gl.DEPTH_TEST);
-		this.gl.enable(this.gl.CULL_FACE);
-		this.gl.depthFunc(this.gl.LEQUAL);
+        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        this.gl.clearDepth(100.0);
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.enable(this.gl.CULL_FACE);
+        this.gl.depthFunc(this.gl.LEQUAL);
 
-		this.axis = new CGFaxis(this);
+        this.axis = new CGFaxis(this);
 
-		// PL4 - 1.2
-		this.enableTextures(true);
+        // PL4 - 1.2
+        this.enableTextures(true);
 
-		// Scene elements
-		this.table = new MyTable(this);
-		// PL4 - 2.3
-		this.windowedWall = new MyQuad(this, -1, 2, -1, 2);
-		this.planeWall = new Plane(this);
-		this.floor = new MyQuad(this, 0, 10, 0, 12);
+        // Scene elements
+        this.table = new MyTable(this);
+        // PL4 - 2.3
+        this.windowedWall = new MyQuad(this, -1, 2, -1, 2);
+        this.planeWall = new Plane(this);
+        this.floor = new MyQuad(this, 0, 10, 0, 12);
 
-		// PL4 - 3.3
-		var slidesUrl = "../resources/images/slides.png";
-		var boardUrl = "../resources/images/board.png"
-		var slidesImg = new Image();
-		var boardImg = new Image();
+        // PL4 - 3.3
+        const slidesUrl = "../resources/images/slides.png";
+        const boardUrl = "../resources/images/board.png";
 
-		this.boardA = new Plane(this, BOARD_A_DIVISIONS, 512, 512, BOARD_WIDTH, BOARD_HEIGHT); //slides
-		this.boardB = new Plane(this, BOARD_B_DIVISIONS, 512, 372, BOARD_WIDTH, BOARD_HEIGHT); //board
+        this.boardA = new Plane(this, BOARD_A_DIVISIONS, 512, 512, BOARD_WIDTH, BOARD_HEIGHT); //slides
+        this.boardB = new Plane(this, BOARD_B_DIVISIONS, 512, 372, BOARD_WIDTH, BOARD_HEIGHT); //board
 
-		// PL3 - 1.3
-		this.prism = new MyPrism(this, 8, 20);
+        // PL3 - 1.3
+        this.prism = new MyPrism(this, 8, 20);
 
-		// PL3 - 2.3
-		this.cylinder = new MyCylinder(this, 8, 20);
+        // PL3 - 2.3
+        this.cylinder = new MyCylinder(this, 8, 20);
 
-		// PL3 - extra
-		this.lamp = new MyLamp(this, 8, 20);
+        // PL3 - extra
+        this.lamp = new MyLamp(this, 8, 20);
 
-		// PL5 - 1.1
-		this.clock = new MyClock(this, 12);
+        // PL5 - 1.1
+        this.clock = new MyClock(this, 12);
 
-		// Materials
-		this.materialDefault = new CGFappearance(this);
-
-		this.slidesAppearance = new CGFappearance(this);
-		this.slidesAppearance.setAmbient(0.3,0.3,0.3,1);
-		this.slidesAppearance.setDiffuse(0.9,0.9,0.9,1);
-		this.slidesAppearance.setSpecular(0.1,0.1,0.1,1);
-		this.slidesAppearance.setShininess(1);
-		// PL4 - 3.2
-		this.slidesAppearance.loadTexture(slidesUrl);
-		// PL4 - 3.3
-		this.slidesAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        // PL5 - extra
+        this.paperPlane = new MyPaperPlane(this, 1.75, 0.75, 0.3);
+        this.paperPlane.pos = [12, 3.8, 8];
+        this.paperPlane.fly = true;
+        this.paperPlane.angle = [0, -90, -7.5];
 
 
-		this.boardAppearance = new CGFappearance(this);
-		this.boardAppearance.setAmbient(0.3,0.3,0.3,1);
-		this.boardAppearance.setDiffuse(0.5,0.5,0.5,1);
-		this.boardAppearance.setSpecular(0.7,0.7,0.7,1);
-		this.boardAppearance.setShininess(120);
-		// PL4 - 3.2
-		this.boardAppearance.loadTexture(boardUrl);
-		// PL4 - 3.3
-		this.boardAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        // Materials
+        this.materialDefault = new CGFappearance(this);
 
-		this.floorAppearance = new CGFappearance(this);
-		// PL4 - 2.2
-		this.floorAppearance.loadTexture("../resources/images/floor.png");
-		this.floorAppearance.setTextureWrap('REPEAT', 'REPEAT');
+        this.slidesAppearance = new CGFappearance(this);
+        this.slidesAppearance.setAmbient(0.3,0.3,0.3,1);
+        this.slidesAppearance.setDiffuse(0.9,0.9,0.9,1);
+        this.slidesAppearance.setSpecular(0.1,0.1,0.1,1);
+        this.slidesAppearance.setShininess(1);
+        // PL4 - 3.2
+        this.slidesAppearance.loadTexture(slidesUrl);
+        // PL4 - 3.3
+        this.slidesAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
-		this.materialPlaneWall = new CGFappearance(this);
-		this.materialPlaneWall.setSpecular(0.1,0.1,0.1,1);
-		this.materialPlaneWall.setAmbient(0.313, 0.466, 0.525,1);
-		this.materialPlaneWall.setDiffuse(0.313, 0.466, 0.525,1);
 
-		// PL4 - 2.3
-		this.windowAppearance = new CGFappearance(this);
-		this.windowAppearance.loadTexture("../resources/images/window.png");
-		this.windowAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        this.boardAppearance = new CGFappearance(this);
+        this.boardAppearance.setAmbient(0.3,0.3,0.3,1);
+        this.boardAppearance.setDiffuse(0.5,0.5,0.5,1);
+        this.boardAppearance.setSpecular(0.7,0.7,0.7,1);
+        this.boardAppearance.setShininess(120);
+        // PL4 - 3.2
+        this.boardAppearance.loadTexture(boardUrl);
+        // PL4 - 3.3
+        this.boardAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
-		// PL4 - extra
-		this.columnAppearance = new CGFappearance(this);
-		this.columnAppearance.loadTexture("../resources/images/stone_column.jpg");
+        this.floorAppearance = new CGFappearance(this);
+        // PL4 - 2.2
+        this.floorAppearance.loadTexture("../resources/images/floor.png");
+        this.floorAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-	};
+        this.materialPlaneWall = new CGFappearance(this);
+        this.materialPlaneWall.setSpecular(0.1,0.1,0.1,1);
+        this.materialPlaneWall.setAmbient(0.313, 0.466, 0.525,1);
+        this.materialPlaneWall.setDiffuse(0.313, 0.466, 0.525,1);
 
-	initCameras() {
-		this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
-	};
+        // PL4 - 2.3
+        this.windowAppearance = new CGFappearance(this);
+        this.windowAppearance.loadTexture("../resources/images/window.png");
+        this.windowAppearance.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
-	initLights() {
-		//this.setGlobalAmbientLight(0.5,0.5,0.5, 1.0);
-		this.setGlobalAmbientLight(0,0,0, 1.0);
+        // PL4 - extra
+        this.columnAppearance = new CGFappearance(this);
+        this.columnAppearance.loadTexture("../resources/images/stone_column.jpg");
 
-		// Positions for five lights
-		this.lights[0].setPosition(4, 6, 1, 1);
-		this.lights[0].setVisible(true); // show marker on light position (different from enabled)
+        // PL5 - extra
+        this.planeAppearance = new CGFappearance(this);
+        this.planeAppearance.setSpecular(0.1, 0.1, 0.1, 1);
+        this.planeAppearance.setAmbient(0.796, 0.262, 0.262,1);
+        this.planeAppearance.setDiffuse(0.796, 0.262, 0.262,1);
 
-		this.lights[1].setPosition(10.5, 6.0, 1.0, 1.0);
-		this.lights[1].setVisible(true); // show marker on light position (different from enabled)
+        // PL5 - 1.5
+        this.setUpdatePeriod(100);
 
-		this.lights[2].setPosition(10.5, 6.0, 5.0, 1.0);
-		this.lights[2].setVisible(true); // show marker on light position (different from enabled)
-		this.lights[3].setPosition(4, 6.0, 5.0, 1.0);
-		this.lights[3].setVisible(true); // show marker on light position (different from enabled)
+    };
 
-		this.lights[0].setAmbient(0, 0, 0, 1);
-		this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-		this.lights[0].setSpecular(1,1,0,1);
-		this.lights[0].enable();
+    // PL5 - 1.5
+    update(currTime) {
+        this.clock.update(currTime);
+        if(this.paperPlane.fly === true) {
+            this.paperPlane.update('x', this.paperPlane.length);
+        } else if(this.paperPlane.freefall === true) {
+            this.paperPlane.update('y', this.paperPlane.height);
+        }
+    }
 
-		this.lights[1].setAmbient(0, 0, 0, 1);
-		this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
-		this.lights[1].enable();
+    initCameras() {
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+    };
 
-		this.lights[2].setSpecular(1,1,1,1);
-		this.lights[2].setConstantAttenuation(0);
-		this.lights[2].setLinearAttenuation(1);
-		this.lights[2].enable();
+    initLights() {
+        //this.setGlobalAmbientLight(0.5,0.5,0.5, 1.0);
+        this.setGlobalAmbientLight(0,0,0, 1.0);
 
-		this.lights[3].setConstantAttenuation(0);
-		this.lights[3].setQuadraticAttenuation(1);
-		this.lights[3].enable();
+        // Positions for five lights
+        this.lights[0].setPosition(4, 6, 1, 1);
+        this.lights[0].setVisible(true); // show marker on light position (different from enabled)
 
-		//PL4 - 2.3
-		this.lights[4].setPosition(0, 4, 7.5, 1);
-		this.lights[4].setVisible(true); // show marker on light position (different from enabled)
+        this.lights[1].setPosition(10.5, 6.0, 1.0, 1.0);
+        this.lights[1].setVisible(true); // show marker on light position (different from enabled)
 
-		this.lights[4].setAmbient(0, 0, 0, 1);
-		this.lights[4].setDiffuse(1, 1, 1, 1);
-		this.lights[4].setSpecular(1, 1, 1, 1);
-		this.lights[4].enable();
-	};
+        this.lights[2].setPosition(10.5, 6.0, 5.0, 1.0);
+        this.lights[2].setVisible(true); // show marker on light position (different from enabled)
+        this.lights[3].setPosition(4, 6.0, 5.0, 1.0);
+        this.lights[3].setVisible(true); // show marker on light position (different from enabled)
 
-	updateLights() {
-		for (var i = 0; i < this.lights.length; i++)
-			this.lights[i].update();
-	}
+        this.lights[0].setAmbient(0, 0, 0, 1);
+        this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+        this.lights[0].setSpecular(1,1,0,1);
+        this.lights[0].enable();
+
+        this.lights[1].setAmbient(0, 0, 0, 1);
+        this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+        this.lights[1].enable();
+
+        this.lights[2].setSpecular(1,1,1,1);
+        this.lights[2].setConstantAttenuation(0);
+        this.lights[2].setLinearAttenuation(1);
+        this.lights[2].enable();
+
+        this.lights[3].setConstantAttenuation(0);
+        this.lights[3].setQuadraticAttenuation(1);
+        this.lights[3].enable();
+
+        //PL4 - 2.3
+        this.lights[4].setPosition(0, 4, 7.5, 1);
+        this.lights[4].setVisible(true); // show marker on light position (different from enabled)
+
+        this.lights[4].setAmbient(0, 0, 0, 1);
+        this.lights[4].setDiffuse(1, 1, 1, 1);
+        this.lights[4].setSpecular(1, 1, 1, 1);
+        this.lights[4].enable();
+    };
+
+    updateLights() {
+        for (let i = 0; i < this.lights.length; i++)
+            this.lights[i].update();
+    }
 
 
 	display() {
@@ -282,6 +306,16 @@ class LightingScene extends CGFscene {
 			this.clock.display();
 		this.popMatrix();
 
+		this.pushMatrix();
+		    this.translate(this.paperPlane.pos[0], this.paperPlane.pos[1], this.paperPlane.pos[2]);
+            this.rotate(this.paperPlane.angle[2] * degToRad, 0, 0, 1);
+		    this.rotate(this.paperPlane.angle[0] * degToRad, 1, 0, 0);
+            this.rotate(this.paperPlane.angle[1] * degToRad, 0, 1, 0);
+
+		    this.planeAppearance.apply();
+		    this.paperPlane.display();
+		this.popMatrix();
+
 		// ---- END Scene drawing section
 	};
-};
+}

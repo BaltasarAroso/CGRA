@@ -3,32 +3,33 @@ include=function(){function f(){var a=this.readyState;(!a||/ded|te/.test(a))&&(c
 serialInclude=function(a){var b=console,c=serialInclude.l;if(a.length>0)c.splice(0,0,a);else b.log("Done!");if(c.length>0){if(c[0].length>1){var d=c[0].splice(0,1);b.log("Loading "+d+"...");include(d,function(){serialInclude([]);});}else{var e=c[0][0];c.splice(0,1);e.call();};}else b.log("Finished.");};serialInclude.l=new Array();
 
 serialInclude([
-	'../lib/CGF.js',
-	'LightingScene.js',
-	'MyQuad.js',
-	'MyUnitCubeQuad.js',
-	'MyTable.js',
-	'Plane.js',
-	'MyPrism.js',
-	'MyCylinder.js',
-	'MyLamp.js',
-	'MyCircle.js',
-	'MyClock.js',
-	'MyClockHand.js',
+    '../lib/CGF.js',
+    'LightingScene.js',
+    'MyQuad.js',
+    'MyUnitCubeQuad.js',
+    'MyTable.js',
+    'Plane.js',
+    'MyPrism.js',
+    'MyCylinder.js',
+    'MyLamp.js',
+    'MyCircle.js',
+    'MyClock.js',
+    'MyClockHand.js',
+    'MyPaperPlane.js',
 
-	main=function() {
-		var app = new CGFapplication(document.body);
-		var myScene = new LightingScene();
-		var myInterface = new CGFinterface();
+    main=function() {
+        let app = new CGFapplication(document.body);
+        let myScene = new LightingScene();
+        let myInterface = new CGFinterface();
 
-		app.init();
+        app.init();
 
-		app.setScene(myScene);
-		app.setInterface(myInterface);
+        app.setScene(myScene);
+        app.setInterface(myInterface);
 
-		myInterface.setActiveCamera(myScene.camera);
+        myInterface.setActiveCamera(myScene.camera);
 
-		app.run();
-	}
+        app.run();
+    }
 
-	]);
+]);

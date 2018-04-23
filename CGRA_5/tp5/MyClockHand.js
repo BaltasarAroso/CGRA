@@ -3,47 +3,24 @@
  * @constructor
  */
 class MyClockHand extends CGFobject {
-	constructor(scene) {
-		super(scene);
+    constructor(scene, length = 1) {
+        super(scene);
 
-		this.vertices = [];
-		this.indices = [];
-		this.normals = [];
-		this.texCoords = [];
+        this.cube = new MyUnitCubeQuad(scene);
+        this.setAngle(0);
 
-		this.initBuffers();
+        this.length = length;
+    };
 
-		this.setAngle(0);
-	};
+    setAngle(angle = 0) {
+        this.angle = angle;
+    }
 
-	setAngle(angle = 0) {
-		this.angle = angle;
-	}
+    display() {
+        this.scene.rotate(-this.angle * Math.PI / 180.0, 0, 0, 1);
+        this.scene.translate(0, 0.475*this.length, 0);
+        this.scene.scale(0.020/this.length, this.length, 0.015);
+        this.cube.display();
+    }
 
-	initBuffers() {
-
-		this.vertices.push(
-			0.25, 0, 0,
-			0, 1, 0,
-			-0.25, 0, 0
-		);
-
-		this.indices.push(0, 1, 2);
-
-		this.normals.push(
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1
-		);
-
-		this.texCoords.push(
-			1, 1,
-			0.5, 0,
-			0, 1
-		);
-
-		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
-	};
-
-};
+}

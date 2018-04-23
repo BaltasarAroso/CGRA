@@ -24,8 +24,8 @@ class MyPrism extends CGFobject {
 
 	initBuffers() {
 
-		for(var z = 0; z <= this.stacks; z++) {
-			for(var i = 0; i < this.slices; i++) {
+		for(let z = 0; z <= this.stacks; z++) {
+			for(let i = 0; i < this.slices; i++) {
 
 				this.vertices.push(
 					Math.cos(i*this.angle),
@@ -72,4 +72,4 @@ class MyPrism extends CGFobject {
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	};
-};
+}
