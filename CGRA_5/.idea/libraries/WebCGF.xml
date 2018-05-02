@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="WebCGF" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/lib/CGF" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/CGF" />
+    </CLASSES>
+    <DOCUMENTATION>
+      <root url="https://paginas.fe.up.pt/~ruirodrig/pub/sw/webcgf/docs/#!/api" />
+    </DOCUMENTATION>
+    <SOURCES />
+  </library>
+</component>
