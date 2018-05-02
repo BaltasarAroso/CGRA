@@ -113,7 +113,17 @@ class LightingScene extends CGFscene {
         // PL5 - 1.5
         this.setUpdatePeriod(100);
 
+        // // PL6 - 3.1
+        // this.option1 = true;
+        // this.option2 = false;
+        // this.speed = 3;
+
     };
+
+    // // PL6 - 3.1
+    // doSomething() {
+    //     console.log("Doing something...");
+    // }
 
     // PL5 - 1.5
     update(currTime) {
