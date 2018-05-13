@@ -61,6 +61,9 @@ class LightingScene extends CGFscene {
         this.paperPlane.fly = true;
         this.paperPlane.angle = [0, -90, -7.5];
 
+        // PL6 - 2.4
+        this.vehicle = new MyVehicle(this);
+
         // Materials
         this.materialDefault = new CGFappearance(this);
 
@@ -246,7 +249,7 @@ class LightingScene extends CGFscene {
 		this.popMatrix();
 
 		// First Table
-		this.pushMatrix();
+		/*this.pushMatrix();
 			this.translate(5, 0, 8);
 			this.table.display();
 		this.popMatrix();
@@ -255,7 +258,7 @@ class LightingScene extends CGFscene {
 		this.pushMatrix();
 			this.translate(12, 0, 8);
 			this.table.display();
-		this.popMatrix();
+		this.popMatrix();*/
 
 		// Board A
 		this.pushMatrix();
@@ -315,7 +318,7 @@ class LightingScene extends CGFscene {
 			this.clock.display();
 		this.popMatrix();
 
-		this.pushMatrix();
+		/*this.pushMatrix();
 		    this.translate(this.paperPlane.pos[0], this.paperPlane.pos[1], this.paperPlane.pos[2]);
             this.rotate(this.paperPlane.angle[2] * degToRad, 0, 0, 1);
 		    this.rotate(this.paperPlane.angle[0] * degToRad, 1, 0, 0);
@@ -323,7 +326,14 @@ class LightingScene extends CGFscene {
 
 		    this.planeAppearance.apply();
 		    this.paperPlane.display();
-		this.popMatrix();
+		this.popMatrix();*/
+
+    // PL6 - 2.4
+    this.pushMatrix();
+      this.translate(7.5, 0, 4);
+      this.scale(4, 4, 4);
+      this.vehicle.display();
+    this.popMatrix();
 
 		// ---- END Scene drawing section
 	};
