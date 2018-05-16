@@ -16,7 +16,7 @@ class MyWheels extends CGFobject
 	{
 		// front left wheel
 		this.scene.pushMatrix();
-			this.scene.translate(0.25, 0.25, 0.25);
+			this.scene.translate(0.5, 0, 0.5);
 			this.scene.rotate(0 * degToRad, 1, 0, 0);
 			this.scene.scale(0.1, 0.25, 0.25);
 			this.cylinder.display();
@@ -24,14 +24,14 @@ class MyWheels extends CGFobject
 
 			// closed circles
 			this.scene.pushMatrix();
-				this.scene.translate(0.25, 0.25, 0.5);
+				this.scene.translate(0.5, 0.25, 0.75);
 				this.scene.rotate(0 * degToRad, 1, 0, 0);
 				this.scene.scale(0.1, 0.25, 0.25);
 				this.circle.display();
 			this.scene.popMatrix();
 
 			this.scene.pushMatrix();
-				this.scene.translate(0.25, 0.25, 0.25);
+				this.scene.translate(0.5, 0.25, 0);
 				this.scene.rotate(180 * degToRad, 1, 0, 0);
 				this.scene.scale(0.1, 0.25, 0.25);
 				this.circle.display();

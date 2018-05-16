@@ -4,7 +4,7 @@
  */
 class MyVehicle extends CGFobject
 {
-    constructor(scene)
+    constructor(scene, len = 1, axisLen = 1, wheelDiameter = 1, width = 1, height = 1)
     {
         super(scene);
 
@@ -35,8 +35,7 @@ class MyVehicle extends CGFobject
 
     display()
     {
-        // table top
-        this.scene.tableAppearance.apply();
+        this.scene.materialDefault.apply();
 
         this.scene.pushMatrix();
             this.scene.translate(0, 0, 0);

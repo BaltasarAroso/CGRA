@@ -62,7 +62,7 @@ class LightingScene extends CGFscene {
         this.paperPlane.angle = [0, -90, -7.5];
 
         // PL6 - 2.4
-        this.vehicle = new MyVehicle(this);
+        this.vehicle = new MyVehicle(this, len, axisLen, wheelDiameter, width, height);
 
         // Materials
         this.materialDefault = new CGFappearance(this);
