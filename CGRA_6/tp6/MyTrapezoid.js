@@ -1,8 +1,8 @@
 /**
- * MyTrapeze
+ * MyTrapezoid
  * @constructor
  */
-class MyTrapeze extends CGFobject {
+class MyTrapezoid extends CGFobject {
 	constructor(scene, minS = 0, maxS = 1, minT = 0, maxT = 1) {
 		super(scene);
 
@@ -19,8 +19,8 @@ class MyTrapeze extends CGFobject {
 		this.vertices = [
 			-0.5, -0.5, 0,
 			0.5, -0.5, 0,
-			-0.25, 0.25, 0,
-			0.25, 0.25, 0
+			-0.25, 0.5, 0,
+			0.25, 0.5, 0
 		];
 
 		this.indices = [

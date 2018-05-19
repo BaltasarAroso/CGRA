@@ -4,7 +4,7 @@
  */
 class MyVehicle extends CGFobject
 {
-    constructor(scene, len = 1, axisLen = 1, wheelDiameter = 1, width = 1, height = 1)
+    constructor(scene) /*, len = 1, axisLen = 1, wheelDiameter = 1, width = 1, height = 1*/
     {
         super(scene);
 
@@ -19,7 +19,7 @@ class MyVehicle extends CGFobject
         this.myBodyWork = new MyBodyWork(this.scene);
 
         // windows
-        //this.myTrapeze = new MyTrapeze(this.scene);
+        //this.myTrapezoid = new MyTrapezoid(this.scene);
 
         this.init();
     };
@@ -38,20 +38,20 @@ class MyVehicle extends CGFobject
         this.scene.materialDefault.apply();
 
         this.scene.pushMatrix();
-            this.scene.translate(0, 0, 0);
-            this.scene.scale(0.8, 0.35, 0.25);
+            this.scene.translate(0, 0.25, 0);
+            this.scene.scale(0.1, 0.25, 0.1);
             this.myWheels.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
             this.scene.translate(0, 0.25, 0);
-            this.scene.scale(0.75, 0.25, 0.25);
+            this.scene.scale(0.75, 0.25, 0.5);
             this.myUnitCubeQuad.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
             this.scene.translate(0, 0.5, 0);
-            this.scene.scale(0.5, 0.25, 0.5);
+            this.scene.scale(0.75, 0.25, 0.5);
             this.myBodyWork.display();
         this.scene.popMatrix();
     };
