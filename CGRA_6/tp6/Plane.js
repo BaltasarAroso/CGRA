@@ -24,15 +24,15 @@ class Plane extends CGFobject {
         /* example for nrDivs = 3 :
                 (numbers represent index of point in vertices array)
 
-                                y
-                                ^
-                                |
+                        y
+                        ^
+                        |
                 0    1  |  2    3
-                                |
-                4	 	 5	|  6    7
-                --------|--------------> x
+                        |
+                4	5	|  6    7
+                --------|-----------> x
                 8    9  |  10  11
-                                |
+                        |
                 12  13  |  14  15
 
                 */
