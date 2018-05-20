@@ -45,12 +45,12 @@ class MyBodyWork extends CGFobject
 		this.scene.popMatrix();
 
 		// front window
-        this.scene.pushMatrix();
-            this.scene.rotate(90 * degToRad, 0, 1, 0);
-            this.scene.translate(0, 0, 1.5 * 0.5 / 2);
-            this.scene.rotate(-Math.atan(0.25), 1, 0, 0);
-            this.scene.scale(1, 1 / Math.cos(0.25), 1);
-            this.quad.display();
-        this.scene.popMatrix();
+    this.scene.pushMatrix();
+        this.scene.rotate(90 * degToRad, 0, 1, 0);
+        this.scene.translate(0, 0, 1.5 * 0.5 / 2);
+        this.scene.rotate(-Math.atan(0.25), 1, 0, 0);
+        this.scene.scale(1, 1 / Math.cos(0.25), 1);
+        this.quad.display();
+    this.scene.popMatrix();
   };
 }

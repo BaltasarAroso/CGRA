@@ -4,7 +4,7 @@
  */
 class MyUnitCubeQuad extends CGFobject
 {
-	constructor(scene) 
+	constructor(scene)
 	{
 		super(scene);
 

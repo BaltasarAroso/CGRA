@@ -7,10 +7,14 @@ class MyTerrain extends Plane {
         super(scene, units, units, units, units, units);
         
         this.len = units;
+		this.quad = new MyQuad(this.scene, 0, this.len, 0, this.len);
     };
     
     display() {
-        this.scene.rotate(90 * degToRad, 1, 0, 0);
-        this.scene.scale();
+        this.scene.pushMatrix();
+            this.scene.scale(this.len, 1, this.len);
+            this.scene.rotate(-90 * degToRad, 1, 0, 0);
+            this.quad.display();
+        this.scene.popMatrix();
     }
 }

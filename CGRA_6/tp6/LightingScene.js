@@ -30,12 +30,16 @@ class LightingScene extends CGFscene {
         // Terrain - PL6 - 1.2
         this.terrain = new MyTerrain(this, TERRAIN_UNITS);
 
-
         // PL6 - 2.4
-        this.vehicle = new MyVehicle(this); /*len, axisLen, wheelDiameter, width, height*/
+        this.vehicle = new MyVehicle(this, 4, 2.25, 1.5, 2.25, 2.25, 0.5, 0.5);
 
         // Materials
         this.materialDefault = new CGFappearance(this);
+
+            // terrain
+            this.terrainAppearance = new CGFappearance(this);
+            this.terrainAppearance.loadTexture("../resources/images/floor.png");
+            this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
         this.setUpdatePeriod(100);
 
@@ -60,7 +64,7 @@ class LightingScene extends CGFscene {
     };
 
     initLights() {
-        this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
+        this.setGlobalAmbientLight(1, 1, 1, 1.0);
     };
 
     updateLights() {
@@ -94,18 +98,18 @@ class LightingScene extends CGFscene {
 		// ---- END Background, camera and axis setup
 
         // ---- BEGIN Scene drawing section
-        
+
         // PL6 - 1.2
         this.pushMatrix();
+            this.terrainAppearance.apply();
             this.terrain.display();
         this.popMatrix();
 
         // PL6 - 2.4
-        // this.pushMatrix();
-        //     this.translate(7.5, 0, 4);
-        //     this.scale(4, 4, 4);
-        //     this.vehicle.display();
-        // this.popMatrix();
+        this.pushMatrix();
+            this.translate(7.5, 0, 4);
+            this.vehicle.display();
+        this.popMatrix();
 
 		// ---- END Scene drawing section
 	};
