@@ -22,6 +22,7 @@ class MyLamp extends CGFobject {
              Following stacks are pairs of complementary triangles.
              (obs: if stacks = 1 => cone) */
 
+        // Y-axis oriented
         this.vertices.push(0, 1, 0);
         this.normals.push(0, 1, 0);
         for(let t = 1; t <= this.stacks; t++) {
@@ -45,43 +46,43 @@ class MyLamp extends CGFobject {
                 );
 
                 if(t === 1) {
-                    //1 triangle
+                    // 1 triangles
                     if(p === this.slices - 1) {
                         this.indices.push(
-                            p + 1,
+                            0,
                             p + 2 - this.slices,
-                            0
+                            p + 1
                         );
                     } else {
                         this.indices.push(
-                            p + 1,
+                            0,
                             p + 2,
-                            0
+                            p + 1
                         );
                     }
                 } else {
-                    //2 triangles
+                    // 2 triangles
                     if(p === this.slices - 1) {
                         this.indices.push(
-                            p + 1 + (t-1)*this.slices,
+                            p + 1 + (t-2)*this.slices,
                             p + 2 + (t-2)*this.slices,
-                            p + 1 + (t-2)*this.slices
+                            p + 1 + (t-1)*this.slices
                         );
                         this.indices.push(
-                            p + 2 + (t-3)*this.slices,
+                            p + 2 + (t-2)*this.slices,
                             p + 1 + (t-2)*this.slices,
-                            p + 2 + (t-2)*this.slices
+                            p + 2 + (t-3)*this.slices
                         );
                     } else {
                         this.indices.push(
-                            p + 1 + (t-1)*this.slices,
+                            p + 1 + (t-2)*this.slices,
                             p + 2 + (t-1)*this.slices,
-                            p + 1 + (t-2)*this.slices
+                            p + 1 + (t-1)*this.slices
                         );
                         this.indices.push(
-                            p + 2 + (t-2)*this.slices,
+                            p + 2 + (t-1)*this.slices,
                             p + 1 + (t-2)*this.slices,
-                            p + 2 + (t-1)*this.slices
+                            p + 2 + (t-2)*this.slices
                         );
                     }
                 }

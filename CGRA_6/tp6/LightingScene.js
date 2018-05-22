@@ -1,6 +1,7 @@
 const degToRad = Math.PI / 180.0;
 
 const TERRAIN_UNITS = 50;
+const LIGHT_ELEVATION = 30;
 
 class LightingScene extends CGFscene {
     constructor() {
@@ -31,15 +32,16 @@ class LightingScene extends CGFscene {
         this.terrain = new MyTerrain(this, TERRAIN_UNITS);
 
         // PL6 - 2.4
-        this.vehicle = new MyVehicle(this, 4, 2.25, 1.5, 2.25, 2.25, 0.5, 0.5);
+        this.vehicle = new MyVehicle(this, 4, 2.25, 1.5, 2.25, 2.25, 0.5, 0.25);
+        // this.vehicle = new MyVehicle(this, 8, 4.5, 3, 4.5, 4.5, 1, 0.5);
 
         // Materials
         this.materialDefault = new CGFappearance(this);
 
-            // terrain
-            this.terrainAppearance = new CGFappearance(this);
-            this.terrainAppearance.loadTexture("../resources/images/floor.png");
-            this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
+        // terrain
+        this.terrainAppearance = new CGFappearance(this);
+        this.terrainAppearance.loadTexture("../resources/images/grass.png");
+        this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
         this.setUpdatePeriod(100);
 
@@ -64,7 +66,32 @@ class LightingScene extends CGFscene {
     };
 
     initLights() {
-        this.setGlobalAmbientLight(1, 1, 1, 1.0);
+        this.setGlobalAmbientLight(0.2, 0.2, 0.2, 1.0);
+
+        // Positions for four floodlights
+        this.lights[0].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
+        // this.lights[0].setVisible(true); // show marker on light position (different from enabled)
+        
+        this.lights[1].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
+        // this.lights[1].setVisible(true); // show marker on light position (different from enabled)
+        
+        this.lights[2].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
+        // this.lights[2].setVisible(true); // show marker on light position (different from enabled)
+        
+        this.lights[3].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
+        // this.lights[3].setVisible(true); // show marker on light position (different from enabled)
+
+        this.lights[0].setAmbient(0, 0, 0, 1);
+        this.lights[0].enable();
+
+        this.lights[1].setAmbient(0, 0, 0, 1);
+        this.lights[1].enable();
+
+        this.lights[2].setAmbient(0, 0, 0, 1);
+        this.lights[2].enable();
+
+        this.lights[3].setAmbient(0, 0, 0, 1);
+        this.lights[3].enable();
     };
 
     updateLights() {
@@ -88,7 +115,7 @@ class LightingScene extends CGFscene {
 		this.applyViewMatrix();
 
 		// Update all lights used
-		// this.updateLights();
+		this.updateLights();
 
 		// Draw axis
 		this.axis.display();
@@ -99,9 +126,12 @@ class LightingScene extends CGFscene {
 
         // ---- BEGIN Scene drawing section
 
+
         // PL6 - 1.2
         this.pushMatrix();
             this.terrainAppearance.apply();
+            this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
+            this.rotate(-90 * degToRad, 1, 0, 0);
             this.terrain.display();
         this.popMatrix();
 

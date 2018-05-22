@@ -2,48 +2,31 @@
  * MyHeadlights
  * @constructor
  */
-class MyHeadlights extends CGFobject
-{
-	constructor(scene, axisZ = 1)
-	{
+class MyHeadlights extends CGFobject {
+	constructor(scene, axisZ = 1) {
 		super(scene);
 		this.axisZ = axisZ;
 
-		this.myHeadlight = new MyLamp(this.scene, 8, 20);
-		this.myCircle = new MyCircle(this.scene, 100);
+		this.myHeadlight = new MyLamp(this.scene, 20, 20);
 	};
 
-	display()
-	{
-		// left headlight
+	display() {
+		
+		this.scene.scale(0.7, 1, 1);
+
+		// Left headlight
 		this.scene.pushMatrix();
 			this.scene.rotate(-90 * degToRad, 0, 0, 1);
-			this.scene.translate(0, 0, 1.5 * this.axisZ);
+			this.scene.translate(0, -0.5, 1.5 * this.axisZ);
 			this.myHeadlight.display();
 		this.scene.popMatrix();
 
-			this.scene.pushMatrix();
-				this.scene.rotate(-90 * degToRad, 1, 0, 0);
-				this.scene.rotate(90 * degToRad, 0, 1, 0);
-				this.scene.translate(0, 1.5 * this.axisZ, 0); 
-				this.myCircle.display();
-			this.scene.popMatrix();
-
-		// right headlight
+		// Right headlight
 		this.scene.pushMatrix();
 			this.scene.rotate(-90 * degToRad, 0, 0, 1);
-			this.scene.translate(0, 0, -1.5 * this.axisZ);
+			this.scene.translate(0, -0.5, -1.5 * this.axisZ);
 			this.myHeadlight.display();
 		this.scene.popMatrix();
-
-			this.scene.pushMatrix();
-				this.scene.rotate(-90 * degToRad, 1, 0, 0);
-				this.scene.rotate(90 * degToRad, 0, 1, 0);
-				this.scene.translate(0, -1.5 * this.axisZ, 0);
-				this.myCircle.display();
-			this.scene.popMatrix();
-
-
 
   };
 }

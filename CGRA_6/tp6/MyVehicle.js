@@ -2,10 +2,8 @@
  * MyVehicle
  * @constructor
  */
-class MyVehicle extends CGFobject
-{
-    constructor(scene, len = 1, width = 1, height = 1, axisX = 1, axisZ = 1, wheelRadius = 1, wheelThickness = 1)
-    {
+class MyVehicle extends CGFobject {
+    constructor(scene, len = 1, width = 1, height = 1, axisX = 1, axisZ = 1, wheelRadius = 1, wheelThickness = 1) {
         super(scene);
 
         this.len = len;
@@ -29,8 +27,7 @@ class MyVehicle extends CGFobject
         this.init();
     };
 
-    init()
-    {
+    init() {
         // wheels
         this.scene.wheelsAppearance = new CGFappearance(this.scene);
         this.scene.wheelsAppearance.loadTexture("../resources/images/wheel.jpg");
@@ -50,8 +47,7 @@ class MyVehicle extends CGFobject
         this.scene.headlightsAppearance.setDiffuse(0.3, 0.45, 0.5,1);
     }
 
-    display()
-    {
+    display() {
 
         this.scene.wheelsAppearance.apply();
 
@@ -79,7 +75,7 @@ class MyVehicle extends CGFobject
 
         this.scene.pushMatrix();
             this.scene.translate(this.len / 2, this.wheelRadius + this.height * 0.65 - 0.25, 0);
-            this.scene.scale(0.25, 0.25, 0.25);
+            this.scene.scale(this.len * 0.25 * 0.25, this.height * 0.65 * 0.25, this.width * 0.45 * 0.25);
             this.myHeadlights.display();
         this.scene.popMatrix();
     };
