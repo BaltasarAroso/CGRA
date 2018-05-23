@@ -3,10 +3,12 @@ const degToRad = Math.PI / 180.0;
 const TERRAIN_UNITS = 50;
 const LIGHT_HEIGHT = 20;
 
-const MAXSPEED_W = 5;
-const MAXSPEED_S = 3;
-const SPEED_INCREMENT_W = 0.2;
-const SPEED_INCREMENT_S = 0.2;
+const FORWARD_MAXSPEED = 10.0;
+const BACKWARD_MAXSPEED = 5.0;
+const SPEED_INCREMENT_SEC = 5.0;
+const TURN_INCREMENT_SEC = 5.0;
+
+const UPDATE_MS = 30.0;
 
 class LightingScene extends CGFscene {
     constructor() {
@@ -49,7 +51,7 @@ class LightingScene extends CGFscene {
         this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
         // PL6 - 4.2
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(UPDATE_MS);
 
         // PL6 - 3.3
         this.lightCenter = true;
@@ -80,28 +82,50 @@ class LightingScene extends CGFscene {
         }
     }
 
-    // PL6 - 4.2
+    //TODO: stabilize direction
+    //TODO: handle rearDir so as to make car actually turn
+    // PL6 - 4.2 + 4.3
     checkKeys() {
-        let text = "Keys pressed: ";
-        let keysPressed = false;
-
         if(this.gui.isKeyPressed("KeyL"))
             this.lightMarkersDisplay();
 
+
         if(this.gui.isKeyPressed("KeyW"))
-            this.carSpeed + SPEED_INCREMENT_W < MAXSPEED_W ?
-                this.carSpeed += SPEED_INCREMENT_W : this.carSpeed = MAXSPEED_W;
+            this.carSpeed + SPEED_INCREMENT_SEC * UPDATE_MS / 1000 < FORWARD_MAXSPEED ?
+                (this.carSpeed += SPEED_INCREMENT_SEC * UPDATE_MS / 1000) : (this.carSpeed = FORWARD_MAXSPEED);
 
         if(this.gui.isKeyPressed("KeyS"))
-            this.carSpeed - SPEED_INCREMENT_S > -MAXSPEED_S ?
-                this.carSpeed -= SPEED_INCREMENT_S : this.carSpeed = -MAXSPEED_S;
+            this.carSpeed - SPEED_INCREMENT_SEC * UPDATE_MS / 1000 > -BACKWARD_MAXSPEED ?
+                (this.carSpeed -= SPEED_INCREMENT_SEC * UPDATE_MS / 1000) : (this.carSpeed = -BACKWARD_MAXSPEED);
 
-        if(this.gui.isKeyPressed("Space"))
+        if(this.gui.isKeyPressed("Space")) {
             this.carSpeed = 0;
+        }
+
+        if(this.gui.isKeyPressed("KeyD")) {
+            this.vehicle.steerChange = true;
+
+            this.vehicle.frontDir.x - (TURN_INCREMENT_SEC * UPDATE_MS / 1000) > 0.5 ?
+                this.vehicle.frontDir.x -= TURN_INCREMENT_SEC * UPDATE_MS / 1000 : 0.5;
+
+            this.vehicle.frontDir.z + (TURN_INCREMENT_SEC * UPDATE_MS / 1000) < 0.5 ?
+                this.vehicle.frontDir.z += TURN_INCREMENT_SEC * UPDATE_MS / 1000 : 0.5;
+        }
+
+        if(this.gui.isKeyPressed("KeyA")) {
+            this.vehicle.steerChange = true;
+
+            this.vehicle.frontDir.x - (TURN_INCREMENT_SEC * UPDATE_MS / 1000) > 0.5 ?
+                this.vehicle.frontDir.x -= TURN_INCREMENT_SEC * UPDATE_MS / 1000 : 0.5;
+
+            this.vehicle.frontDir.z - (TURN_INCREMENT_SEC * UPDATE_MS / 1000) > -0.5 ?
+                this.vehicle.frontDir.z -= TURN_INCREMENT_SEC * UPDATE_MS / 1000 : -0.5;
+        }
     }
 
     handleCar() {
         this.vehicle.carSpeed = this.carSpeed;
+        this.vehicle.update();
     }
 
     update(currTime) {
@@ -111,7 +135,7 @@ class LightingScene extends CGFscene {
     }
 
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(50, 50, 65), vec3.fromValues(0, 0, 0));
     };
 
     initLights() {
@@ -189,7 +213,6 @@ class LightingScene extends CGFscene {
 
         // PL6 - 2.4
         this.pushMatrix();
-            this.translate(7.5, 0, 4);
             this.vehicle.display();
         this.popMatrix();
 

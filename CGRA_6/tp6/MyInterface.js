@@ -37,7 +37,7 @@ class MyInterface extends CGFinterface {
         group.add(this.scene, 'lightCorner4');
         // group.add(this.scene, 'lightMarkersDisplay');
 
-        this.gui.add(this.scene, 'carSpeed', -MAXSPEED_S, MAXSPEED_W).listen();
+        this.gui.add(this.scene, 'carSpeed', -BACKWARD_MAXSPEED, FORWARD_MAXSPEED).listen();
 
         this.initKeys();
 

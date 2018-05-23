@@ -19,32 +19,68 @@ class MyVehicle extends CGFobject {
 
         // Dynamic
         this.carSpeed = 0;
-        this.xPos = 0;
-        this.yPos = 0;
-        this.zPos = 0;
+        this.pos = {x: 0.0, y: 0.0, z: 0.0};
+        this.frontDir = {x: 1.0, y: 0.0, z: 0.0};
+        this.rearDir = {x: 1.0, y: 0.0, z: 0.0};
+
+        this.dirAngle = 0.0;
+        this.steerChange = false;
+
 
         /** Elements **/
 
-        // car headlight
+        // Car headlights
         this.myHeadlights = new MyHeadlights(this.scene, this.axisZ);
 
-        // wheels
+        // Four spaced wheels
         this.myWheels = new MyWheels(this.scene, this.axisX, this.axisZ, this.wheelRadius, this.wheelThickness);
 
-        // bodywork
+        // Bodywork
         this.myUnitCubeQuad = new MyUnitCubeQuad(this.scene, this.len, this.width, this.height);
         this.myBodyWork = new MyBodyWork(this.scene, this.len, this.width, this.height);
 
         this.init();
     };
 
+    update() {
+        if(this.carSpeed) {
+            let nextPos;
+            if(this.frontDir.x) {
+                nextPos = this.pos.x + (this.carSpeed * UPDATE_MS / 1000) * this.frontDir.x;
+                if(nextPos < ((TERRAIN_UNITS - this.len) / 2) && nextPos > ((-TERRAIN_UNITS + this.len) / 2))
+                    this.pos.x = nextPos;
+            }
+
+            if(this.frontDir.y) {
+                nextPos = this.pos.y + (this.carSpeed * UPDATE_MS / 1000) * this.frontDir.y;
+                if(nextPos < ((TERRAIN_UNITS - this.len) / 2) && nextPos > ((-TERRAIN_UNITS + this.len) / 2))
+                    this.pos.y = nextPos;
+
+            }
+
+            if(this.frontDir.z) {
+                nextPos = this.pos.z + (this.carSpeed * UPDATE_MS / 1000) * this.frontDir.z;
+                if(nextPos < ((TERRAIN_UNITS - this.len) / 2) && nextPos > ((-TERRAIN_UNITS + this.len) / 2))
+                    this.pos.z = nextPos;
+
+            }
+        }
+
+        if(this.steerChange) {
+            this.steerChange = false;
+
+            //TODO: calculate angle from frontDir
+            this.myWheels.frontWheelsAngle = 99999;
+        }
+    }
+
     init() {
         // bodyWork
         this.scene.bodyWorkAppearance = new CGFappearance(this.scene);
         this.scene.bodyWorkAppearance.loadTexture("../resources/images/bodywork.jpg");
-        this.scene.bodyWorkAppearance.setSpecular(0.4,0.4,0.4,1);
-        this.scene.bodyWorkAppearance.setAmbient(0.5, 0.5, 0.5,1);
-        this.scene.bodyWorkAppearance.setDiffuse(0.5, 0.5, 0.5,1);
+        this.scene.bodyWorkAppearance.setSpecular(0.4, 0.4, 0.4, 1);
+        this.scene.bodyWorkAppearance.setAmbient(0.5, 0.5, 0.5, 1);
+        this.scene.bodyWorkAppearance.setDiffuse(0.5, 0.5, 0.5, 1);
 
         // headlights
         this.scene.headlightsAppearance = new CGFappearance(this.scene);
@@ -55,6 +91,8 @@ class MyVehicle extends CGFobject {
     }
 
     display() {
+
+        this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
 
         this.scene.pushMatrix();
             this.scene.translate(0, this.wheelRadius, 0);
