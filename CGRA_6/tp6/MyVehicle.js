@@ -6,6 +6,9 @@ class MyVehicle extends CGFobject {
     constructor(scene, len = 1, width = 1, height = 1, axisX = 1, axisZ = 1, wheelRadius = 1, wheelThickness = 1) {
         super(scene);
 
+        /** Parameters **/
+
+        // Static
         this.len = len;
         this.width = width;
         this.height = height;
@@ -13,6 +16,14 @@ class MyVehicle extends CGFobject {
         this.axisZ = axisZ;
         this.wheelRadius = wheelRadius;
         this.wheelThickness = wheelThickness;
+
+        // Dynamic
+        this.carSpeed = 0;
+        this.xPos = 0;
+        this.yPos = 0;
+        this.zPos = 0;
+
+        /** Elements **/
 
         // car headlight
         this.myHeadlights = new MyHeadlights(this.scene, this.axisZ);
@@ -28,10 +39,6 @@ class MyVehicle extends CGFobject {
     };
 
     init() {
-        // wheels
-        this.scene.wheelsAppearance = new CGFappearance(this.scene);
-        this.scene.wheelsAppearance.loadTexture("../resources/images/wheel.jpg");
-
         // bodyWork
         this.scene.bodyWorkAppearance = new CGFappearance(this.scene);
         this.scene.bodyWorkAppearance.loadTexture("../resources/images/bodywork.jpg");
@@ -48,8 +55,6 @@ class MyVehicle extends CGFobject {
     }
 
     display() {
-
-        this.scene.wheelsAppearance.apply();
 
         this.scene.pushMatrix();
             this.scene.translate(0, this.wheelRadius, 0);

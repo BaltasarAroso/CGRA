@@ -1,7 +1,12 @@
 const degToRad = Math.PI / 180.0;
 
 const TERRAIN_UNITS = 50;
-const LIGHT_ELEVATION = 10;
+const LIGHT_HEIGHT = 20;
+
+const MAXSPEED_W = 5;
+const MAXSPEED_S = 3;
+const SPEED_INCREMENT_W = 0.2;
+const SPEED_INCREMENT_S = 0.2;
 
 class LightingScene extends CGFscene {
     constructor() {
@@ -57,6 +62,9 @@ class LightingScene extends CGFscene {
 
         // PL6 - 3.4
         this.axisState = false;
+
+        // PL6 - 4.2
+        this.carSpeed = 0.0;
     };
 
     // PL6 - 3.4
@@ -80,21 +88,26 @@ class LightingScene extends CGFscene {
         if(this.gui.isKeyPressed("KeyL"))
             this.lightMarkersDisplay();
 
-        if(this.gui.isKeyPressed("KeyW")) {
-            text+=" W ";
-            keysPressed = true;
-        }
-        if(this.gui.isKeyPressed("KeyS")) {
-            text+=" S ";
-            keysPressed = true;
-        }
-        if(keysPressed)
-            console.log(text);
+        if(this.gui.isKeyPressed("KeyW"))
+            this.carSpeed + SPEED_INCREMENT_W < MAXSPEED_W ?
+                this.carSpeed += SPEED_INCREMENT_W : this.carSpeed = MAXSPEED_W;
+
+        if(this.gui.isKeyPressed("KeyS"))
+            this.carSpeed - SPEED_INCREMENT_S > -MAXSPEED_S ?
+                this.carSpeed -= SPEED_INCREMENT_S : this.carSpeed = -MAXSPEED_S;
+
+        if(this.gui.isKeyPressed("Space"))
+            this.carSpeed = 0;
+    }
+
+    handleCar() {
+        this.vehicle.carSpeed = this.carSpeed;
     }
 
     update(currTime) {
         // PL6 - 4.2
         this.checkKeys();
+        this.handleCar();
     }
 
     initCameras() {
@@ -105,20 +118,11 @@ class LightingScene extends CGFscene {
         this.setGlobalAmbientLight(0.2, 0.2, 0.2, 1.0);
 
         // Positions for five floodlights
-        this.lights[0].setPosition(0, LIGHT_ELEVATION, 0, 1);
-        // this.lights[0].setVisible(true); // show marker on light position (different from enabled)
-
-        this.lights[1].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
-        // this.lights[1].setVisible(true); // show marker on light position (different from enabled)
-        
-        this.lights[2].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
-        // this.lights[2].setVisible(true); // show marker on light position (different from enabled)
-        
-        this.lights[3].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
-        // this.lights[3].setVisible(true); // show marker on light position (different from enabled)
-        
-        this.lights[4].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
-        // this.lights[4].setVisible(true); // show marker on light position (different from enabled)
+        this.lights[0].setPosition(0, LIGHT_HEIGHT, 0, 1);
+        this.lights[1].setPosition(TERRAIN_UNITS/2, LIGHT_HEIGHT, TERRAIN_UNITS/2, 1);
+        this.lights[2].setPosition(TERRAIN_UNITS/2, LIGHT_HEIGHT, -TERRAIN_UNITS/2, 1);
+        this.lights[3].setPosition(-TERRAIN_UNITS/2, LIGHT_HEIGHT, -TERRAIN_UNITS/2, 1);
+        this.lights[4].setPosition(-TERRAIN_UNITS/2, LIGHT_HEIGHT, TERRAIN_UNITS/2, 1);
 
         this.lights[0].setAmbient(0, 0, 0, 1);
         this.lights[0].enable();
