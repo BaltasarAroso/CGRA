@@ -7,9 +7,9 @@ class MyWheels extends CGFobject
 	constructor(scene, axisX = 1, axisZ = 1, wheelRadius = 1, wheelThickness = 1)
 	{
 		super(scene);
-        this.axisX = axisX / wheelRadius * 0.5;
-        this.axisZ = axisZ / wheelThickness * 0.5;
-				this.wheelThickness = wheelThickness;
+		this.axisX = axisX / wheelRadius * 0.5;
+		this.axisZ = axisZ / wheelThickness * 0.5;
+		this.wheelThickness = wheelThickness;
 
 		this.cylinder = new MyCylinder(this.scene, 100, 2);
 		this.circle = new MyCircle(this.scene, 100);
@@ -72,7 +72,7 @@ class MyWheels extends CGFobject
 			// outter base
 			this.scene.pushMatrix();
 				this.scene.translate(this.axisX, 0, -this.axisZ + 0);
-                this.scene.rotate(180 * degToRad, 1, 0, 0);
+        this.scene.rotate(180 * degToRad, 1, 0, 0);
 				this.circle.display();
 			this.scene.popMatrix();
 
@@ -94,7 +94,6 @@ class MyWheels extends CGFobject
 				this.scene.rotate(180 * degToRad, 1, 0, 0);
 				this.circle.display();
 			this.scene.popMatrix();
-
 
   };
 }

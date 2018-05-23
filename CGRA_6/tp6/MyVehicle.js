@@ -84,14 +84,6 @@ class MyVehicle extends CGFobject {
         this.scene.headlightsAppearance.setDiffuse(1, 1, 0.4, 1);
     }
 
-    update(currTime) {
-      if (this.scene.texFlag) {
-        this.scene.currVehicleAppearance = this.scene.vehicleAppearanceList[this.scene.vehicleTexture];
-        this.scene.oldTexture = this.scene.vehicleTexture;
-        this.scene.texFlag = !this.scene.texFlag;
-      }
-    }
-
     display() {
 
         this.scene.wheelsAppearance.apply();
