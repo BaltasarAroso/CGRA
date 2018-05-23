@@ -106,19 +106,10 @@ class LightingScene extends CGFscene {
 
         // Positions for five floodlights
         this.lights[0].setPosition(0, LIGHT_ELEVATION, 0, 1);
-        // this.lights[0].setVisible(true); // show marker on light position (different from enabled)
-
         this.lights[1].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
-        // this.lights[1].setVisible(true); // show marker on light position (different from enabled)
-        
         this.lights[2].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
-        // this.lights[2].setVisible(true); // show marker on light position (different from enabled)
-        
         this.lights[3].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
-        // this.lights[3].setVisible(true); // show marker on light position (different from enabled)
-        
         this.lights[4].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
-        // this.lights[4].setVisible(true); // show marker on light position (different from enabled)
 
         this.lights[0].setAmbient(0, 0, 0, 1);
         this.lights[0].enable();
