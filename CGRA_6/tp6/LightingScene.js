@@ -9,6 +9,13 @@ const SPEED_INCREMENT_SEC = 5.0;
 const TURN_INCREMENT_SEC = 5.0;
 
 const UPDATE_MS = 30.0;
+const CAR_LEN = 4;
+const CAR_WIDTH = 2.25;
+const CAR_HEIGHT = 1.5;
+const CAR_AXISX = 2.25;
+const CAR_AXISZ = 2.25;
+const CAR_WHEELRADIUS = 0.5;
+const CAR_WHEELTHICKNESS = 0.25;
 
 class LightingScene extends CGFscene {
     constructor() {
@@ -33,14 +40,29 @@ class LightingScene extends CGFscene {
 
         this.enableTextures(true);
 
+        // PL6 - 5.2
+        this.vehicleAppearances = ["black", "yellow", "green", "blue"];
+        this.currVehicleAppearance = this.vehicleAppearances[0];
+
+        // this.vehicleAppearanceList = {};
+        // for (let i = 0; i < this.vehicleAppearances.length; i++) {
+        //   this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
+        // }
+
         // Scene elements
 
         // Terrain - PL6 - 1.2
         this.terrain = new MyTerrain(this, TERRAIN_UNITS);
 
         // PL6 - 2.4
-        this.vehicle = new MyVehicle(this, 4, 2.25, 1.5, 2.25, 2.25, 0.5, 0.25);
+        this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
         // this.vehicle = new MyVehicle(this, 8, 4.5, 3, 4.5, 4.5, 1, 0.5);
+
+        // PL6 - 7.3
+        this.crane = new MyCrane(this, 7, 4);
+        this.floorD = new MyTerrain(this, 10);
+        this.floorR = new MyTerrain(this, CAR_LEN + 2);
+
 
         // Materials
         this.materialDefault = new CGFappearance(this);
@@ -49,6 +71,14 @@ class LightingScene extends CGFscene {
         this.terrainAppearance = new CGFappearance(this);
         this.terrainAppearance.loadTexture("../resources/images/grass.png");
         this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+        // floorD
+        this.floorDAppearance = new CGFappearance(this);
+        this.floorDAppearance.loadTexture("../resources/images/floorD.jpg");
+
+        // floorR
+        this.floorRAppearance = new CGFappearance(this);
+        this.floorRAppearance.loadTexture("../resources/images/floorR.jpg");
 
         // PL6 - 4.2
         this.setUpdatePeriod(UPDATE_MS);
@@ -175,7 +205,6 @@ class LightingScene extends CGFscene {
         this.lightCorner4 ? this.lights[4].enable() : this.lights[4].disable();
     }
 
-
 	display() {
 		// ---- BEGIN Background, camera and axis setup
 
@@ -202,7 +231,6 @@ class LightingScene extends CGFscene {
 
         // ---- BEGIN Scene drawing section
 
-
         // PL6 - 1.2
         this.pushMatrix();
             this.terrainAppearance.apply();
@@ -213,7 +241,30 @@ class LightingScene extends CGFscene {
 
         // PL6 - 2.4
         this.pushMatrix();
+            this.translate(10, 0, 10);
             this.vehicle.display();
+        this.popMatrix();
+
+        // PL6 - 7.3
+        this.pushMatrix();
+            this.translate(0, 0, 0);
+            this.crane.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+          this.translate(0, 0, -9);
+          this.scale(10, 1, 10);
+          this.rotate(-90 * degToRad, 1, 0, 0);
+          this.floorDAppearance.apply();
+          this.floorD.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+          this.translate(0, 0, CAR_LEN + 2);
+          this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
+          this.rotate(-90 * degToRad, 1, 0, 0);
+          this.floorRAppearance.apply();
+          this.floorR.display();
         this.popMatrix();
 
 		// ---- END Scene drawing section

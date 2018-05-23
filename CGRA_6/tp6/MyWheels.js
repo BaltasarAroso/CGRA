@@ -136,7 +136,85 @@ class MyWheels extends CGFobject {
             this.scene.rotate(180 * degToRad, 1, 0, 0);
             this.circle.display();
         this.scene.popMatrix();
+	display()
+	{
+		this.scene.translate(0, 0, -0.5);
 
+		// front left wheel
+		this.scene.pushMatrix();
+			this.scene.translate(this.axisX, 0, this.axisZ);
+			this.cylinder.display();
+		this.scene.popMatrix();
+
+			// inner base
+			this.scene.pushMatrix();
+				this.scene.translate(this.axisX, 0, this.axisZ + 0);
+        this.scene.rotate(180 * degToRad, 1, 0, 0);
+				this.circle.display();
+			this.scene.popMatrix();
+
+			// outter base
+			this.scene.pushMatrix();
+				this.scene.translate(this.axisX, 0, this.axisZ + 1);
+				this.circle.display();
+			this.scene.popMatrix();
+
+		// back left wheel
+		this.scene.pushMatrix();
+			this.scene.translate(-this.axisX, 0, this.axisZ);
+			this.cylinder.display();
+		this.scene.popMatrix();
+
+			// inner base
+			this.scene.pushMatrix();
+				this.scene.translate(-this.axisX, 0, this.axisZ + 0);
+				this.scene.rotate(180 * degToRad, 1, 0, 0);
+				this.circle.display();
+			this.scene.popMatrix();
+
+			// outter base
+			this.scene.pushMatrix();
+				this.scene.translate(-this.axisX, 0, this.axisZ + 1);
+				this.circle.display();
+			this.scene.popMatrix();
+
+		// front right wheel
+		this.scene.pushMatrix();
+			this.scene.translate(this.axisX, 0, -this.axisZ);
+			this.cylinder.display();
+		this.scene.popMatrix();
+
+			// inner base
+			this.scene.pushMatrix();
+				this.scene.translate(this.axisX, 0, -this.axisZ + 1);
+				this.circle.display();
+			this.scene.popMatrix();
+
+			// outter base
+			this.scene.pushMatrix();
+				this.scene.translate(this.axisX, 0, -this.axisZ + 0);
+        this.scene.rotate(180 * degToRad, 1, 0, 0);
+				this.circle.display();
+			this.scene.popMatrix();
+
+		// back right wheel
+		this.scene.pushMatrix();
+			this.scene.translate(-this.axisX, 0, -this.axisZ);
+			this.cylinder.display();
+		this.scene.popMatrix();
+
+			// inner base
+			this.scene.pushMatrix();
+				this.scene.translate(-this.axisX, 0, -this.axisZ + 1);
+				this.circle.display();
+			this.scene.popMatrix();
+
+			// outter base
+			this.scene.pushMatrix();
+				this.scene.translate(-this.axisX, 0, -this.axisZ + 0);
+				this.scene.rotate(180 * degToRad, 1, 0, 0);
+				this.circle.display();
+			this.scene.popMatrix();
 
   };
 }

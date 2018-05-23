@@ -82,6 +82,43 @@ class MyVehicle extends CGFobject {
         this.scene.bodyWorkAppearance.setAmbient(0.5, 0.5, 0.5, 1);
         this.scene.bodyWorkAppearance.setDiffuse(0.5, 0.5, 0.5, 1);
 
+        // black
+        this.scene.blackAppearance = new CGFappearance(this.scene);
+        this.scene.blackAppearance.loadTexture("../resources/images/black.jpg");
+        this.scene.blackAppearance.setSpecular(0.4,0.4,0.4,1);
+        this.scene.blackAppearance.setAmbient(0.5, 0.5, 0.5,1);
+        this.scene.blackAppearance.setDiffuse(0.5, 0.5, 0.5,1);
+
+        // yellow
+        this.scene.yellowAppearance = new CGFappearance(this.scene);
+        this.scene.yellowAppearance.loadTexture("../resources/images/yellow.jpg");
+        this.scene.yellowAppearance.setSpecular(0.4,0.4,0.4,1);
+        this.scene.yellowAppearance.setAmbient(0.5, 0.5, 0.5,1);
+        this.scene.yellowAppearance.setDiffuse(0.5, 0.5, 0.5,1);
+
+        // green
+        this.scene.greenAppearance = new CGFappearance(this.scene);
+        this.scene.greenAppearance.loadTexture("../resources/images/green.jpg");
+        this.scene.greenAppearance.setSpecular(0.4,0.4,0.4,1);
+        this.scene.greenAppearance.setAmbient(0.5, 0.5, 0.5,1);
+        this.scene.greenAppearance.setDiffuse(0.5, 0.5, 0.5,1);
+
+        // blue
+        this.scene.blueAppearance = new CGFappearance(this.scene);
+        this.scene.blueAppearance.loadTexture("../resources/images/blue.jpg");
+        this.scene.blueAppearance.setSpecular(0.4,0.4,0.4,1);
+        this.scene.blueAppearance.setAmbient(0.5, 0.5, 0.5,1);
+        this.scene.blueAppearance.setDiffuse(0.5, 0.5, 0.5,1);
+
+        // this.scene.vehicleTextureAppearance = {};
+        // for (let i = 0; i < this.scene.vehicleAppearances.length; i++) {
+        //   this.scene.vehicleTextureAppearance[i] = new CGFappearance(this.scene);
+        //   this.scene.vehicleTextureAppearance[i].loadTexture("../resources/images/" + this.scene.vehicleAppearances[i] + ".jpg");
+        //   this.scene.vehicleTextureAppearance[i].setSpecular(0.4,0.4,0.4,1);
+        //   this.scene.vehicleTextureAppearance[i].setAmbient(0.5, 0.5, 0.5,1);
+        //   this.scene.vehicleTextureAppearance[i].setDiffuse(0.5, 0.5, 0.5,1);
+        // }
+
         // headlights
         this.scene.headlightsAppearance = new CGFappearance(this.scene);
         this.scene.headlightsAppearance.loadTexture("../resources/images/headlight.jpg");
@@ -100,7 +137,28 @@ class MyVehicle extends CGFobject {
             this.myWheels.display();
         this.scene.popMatrix();
 
-        this.scene.bodyWorkAppearance.apply();
+        switch (this.scene.currVehicleAppearance) {
+          case this.scene.vehicleAppearances[0]:
+            this.scene.blackAppearance.apply();
+            break;
+
+          case this.scene.vehicleAppearances[1]:
+            this.scene.yellowAppearance.apply();
+            break;
+
+          case this.scene.vehicleAppearances[2]:
+            this.scene.greenAppearance.apply();
+            break;
+
+          case this.scene.vehicleAppearances[3]:
+            this.scene.blueAppearance.apply();
+            break;
+
+          default:
+            this.scene.bodyWorkAppearance.apply();
+        }
+
+        // this.scene.vehicleTextureAppearance[1];
 
         this.scene.pushMatrix();
             this.scene.translate(0, this.wheelRadius + this.height * 0.65 / 2, 0);

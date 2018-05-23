@@ -1,4 +1,4 @@
- 
+
 class MyInterface extends CGFinterface {
 
 	/**
@@ -8,7 +8,7 @@ class MyInterface extends CGFinterface {
  	constructor () {
  		super();
  	}
-	
+
 	/**
 	 * init
 	 * @param {CGFapplication} application
@@ -26,7 +26,6 @@ class MyInterface extends CGFinterface {
         // PL6 - 3.4
         this.gui.add(this.scene, 'axisDisplay');
 
-
         // PL6 - 3.3
         let group = this.gui.addFolder("Luzes");
 
@@ -38,6 +37,8 @@ class MyInterface extends CGFinterface {
         // group.add(this.scene, 'lightMarkersDisplay');
 
         this.gui.add(this.scene, 'carSpeed', -BACKWARD_MAXSPEED, FORWARD_MAXSPEED).listen();
+        // PL6 - 5.2
+        this.gui.add(this.scene, 'currVehicleAppearance', this.scene.vehicleAppearances);
 
         this.initKeys();
 
@@ -63,4 +64,3 @@ class MyInterface extends CGFinterface {
         return this.activeKeys[keyCode] || false;
     }
 }
-
