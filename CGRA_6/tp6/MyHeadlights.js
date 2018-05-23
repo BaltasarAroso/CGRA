@@ -11,7 +11,7 @@ class MyHeadlights extends CGFobject {
 	};
 
 	display() {
-		
+
 		this.scene.scale(0.7, 1, 1);
 
 		// Left headlight

@@ -26,6 +26,15 @@ class LightingScene extends CGFscene {
 
         this.enableTextures(true);
 
+        // PL6 - 5.2
+        this.vehicleAppearances = ["black", "yellow", "green", "blue"];
+        this.currVehicleAppearance = this.vehicleAppearances[0];
+
+        // this.vehicleAppearanceList = {};
+        // for (let i = 0; i < this.vehicleAppearances.length; i++) {
+        //   this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
+        // }
+
         // Scene elements
 
         // Terrain - PL6 - 1.2
@@ -57,6 +66,7 @@ class LightingScene extends CGFscene {
 
         // PL6 - 3.4
         this.axisState = false;
+
     };
 
     // PL6 - 3.4
@@ -138,7 +148,6 @@ class LightingScene extends CGFscene {
         this.lightCorner4 ? this.lights[4].enable() : this.lights[4].disable();
     }
 
-
 	display() {
 		// ---- BEGIN Background, camera and axis setup
 
@@ -176,7 +185,7 @@ class LightingScene extends CGFscene {
 
         // PL6 - 2.4
         this.pushMatrix();
-            this.translate(7.5, 0, 4);
+            this.translate(0, 0, 0);
             this.vehicle.display();
         this.popMatrix();
 
