@@ -42,9 +42,9 @@ class MyVehicle extends CGFobject {
         // headlights
         this.scene.headlightsAppearance = new CGFappearance(this.scene);
         this.scene.headlightsAppearance.loadTexture("../resources/images/headlight.jpg");
-        this.scene.headlightsAppearance.setSpecular(0.1,0.1,0.1,1);
-        this.scene.headlightsAppearance.setAmbient(0.3, 0.45, 0.5,1);
-        this.scene.headlightsAppearance.setDiffuse(0.3, 0.45, 0.5,1);
+        this.scene.headlightsAppearance.setSpecular(1, 1, 0.4, 1);
+        this.scene.headlightsAppearance.setAmbient(1, 1, 0.4, 1);
+        this.scene.headlightsAppearance.setDiffuse(1, 1, 0.4, 1);
     }
 
     display() {

@@ -1,7 +1,7 @@
 const degToRad = Math.PI / 180.0;
 
 const TERRAIN_UNITS = 50;
-const LIGHT_ELEVATION = 30;
+const LIGHT_ELEVATION = 10;
 
 class LightingScene extends CGFscene {
     constructor() {
@@ -43,22 +43,58 @@ class LightingScene extends CGFscene {
         this.terrainAppearance.loadTexture("../resources/images/grass.png");
         this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
+        // PL6 - 4.2
         this.setUpdatePeriod(100);
 
-        // // PL6 - 3.1
-        // this.option1 = true;
-        // this.option2 = false;
-        // this.speed = 3;
+        // PL6 - 3.3
+        this.lightCenter = true;
+        this.lightCorner1 = true;
+        this.lightCorner2 = true;
+        this.lightCorner3 = true;
+        this.lightCorner4 = true;
 
+        this.lightMarkersState = false;
+
+        // PL6 - 3.4
+        this.axisState = false;
     };
 
-    // // PL6 - 3.1
-    // doSomething() {
-    //     console.log("Doing something...");
-    // }
+    // PL6 - 3.4
+    axisDisplay() {
+        this.axisState = !this.axisState;
+    }
 
-    // PL5 - 1.5
+    lightMarkersDisplay() {
+        this.lightMarkersState = !this.lightMarkersState;
+
+        for (let i = 0; i < this.lights.length; i++) {
+            this.lights[i].setVisible(this.lightMarkersState);
+        }
+    }
+
+    // PL6 - 4.2
+    checkKeys() {
+        let text = "Keys pressed: ";
+        let keysPressed = false;
+
+        if(this.gui.isKeyPressed("KeyL"))
+            this.lightMarkersDisplay();
+
+        if(this.gui.isKeyPressed("KeyW")) {
+            text+=" W ";
+            keysPressed = true;
+        }
+        if(this.gui.isKeyPressed("KeyS")) {
+            text+=" S ";
+            keysPressed = true;
+        }
+        if(keysPressed)
+            console.log(text);
+    }
+
     update(currTime) {
+        // PL6 - 4.2
+        this.checkKeys();
     }
 
     initCameras() {
@@ -68,18 +104,21 @@ class LightingScene extends CGFscene {
     initLights() {
         this.setGlobalAmbientLight(0.2, 0.2, 0.2, 1.0);
 
-        // Positions for four floodlights
-        this.lights[0].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
+        // Positions for five floodlights
+        this.lights[0].setPosition(0, LIGHT_ELEVATION, 0, 1);
         // this.lights[0].setVisible(true); // show marker on light position (different from enabled)
-        
-        this.lights[1].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
+
+        this.lights[1].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
         // this.lights[1].setVisible(true); // show marker on light position (different from enabled)
         
-        this.lights[2].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
+        this.lights[2].setPosition(TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
         // this.lights[2].setVisible(true); // show marker on light position (different from enabled)
         
         this.lights[3].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, -TERRAIN_UNITS/2, 1);
         // this.lights[3].setVisible(true); // show marker on light position (different from enabled)
+        
+        this.lights[4].setPosition(-TERRAIN_UNITS/2, LIGHT_ELEVATION, TERRAIN_UNITS/2, 1);
+        // this.lights[4].setVisible(true); // show marker on light position (different from enabled)
 
         this.lights[0].setAmbient(0, 0, 0, 1);
         this.lights[0].enable();
@@ -92,11 +131,20 @@ class LightingScene extends CGFscene {
 
         this.lights[3].setAmbient(0, 0, 0, 1);
         this.lights[3].enable();
+
+        this.lights[4].setAmbient(0, 0, 0, 1);
+        this.lights[4].enable();
     };
 
     updateLights() {
-        for (let i = 0; i < this.lights.length; i++)
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].update();
+        }
+        this.lightCenter  ? this.lights[0].enable() : this.lights[0].disable();
+        this.lightCorner1 ? this.lights[1].enable() : this.lights[1].disable();
+        this.lightCorner2 ? this.lights[2].enable() : this.lights[2].disable();
+        this.lightCorner3 ? this.lights[3].enable() : this.lights[3].disable();
+        this.lightCorner4 ? this.lights[4].enable() : this.lights[4].disable();
     }
 
 
@@ -117,8 +165,8 @@ class LightingScene extends CGFscene {
 		// Update all lights used
 		this.updateLights();
 
-		// Draw axis
-		this.axis.display();
+		// Draw axis   +   PL6 - 3.4
+		if(this.axisState) this.axis.display();
 
 		this.materialDefault.apply();
 
