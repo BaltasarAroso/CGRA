@@ -5,6 +5,7 @@ const LIGHT_HEIGHT = 20;
 
 
 const UPDATE_MS = 30.0;
+
 const CAR_LEN = 4;
 const CAR_WIDTH = 2.25;
 const CAR_HEIGHT = 1.5;
@@ -12,6 +13,10 @@ const CAR_AXISX = 2.25;
 const CAR_AXISZ = 2.25;
 const CAR_WHEELRADIUS = 0.5;
 const CAR_WHEELTHICKNESS = 0.25;
+
+const CRANE_HEIGHT = 10;
+const CRANE_RANGE = 7;
+const FLOORD_SIZE = 10;
 
 class LightingScene extends CGFscene {
     constructor() {
@@ -37,7 +42,7 @@ class LightingScene extends CGFscene {
         this.enableTextures(true);
 
         // PL6 - 5.2
-        this.vehicleAppearances = ["black", "yellow", "green", "blue"];
+        this.vehicleAppearances = ["black", "orange", "green", "blue"];
         this.currVehicleAppearance = this.vehicleAppearances[0];
 
         // this.vehicleAppearanceList = {};
@@ -55,9 +60,14 @@ class LightingScene extends CGFscene {
         // this.vehicle = new MyVehicle(this, 8, 4.5, 3, 4.5, 4.5, 1, 0.5);
 
         // PL6 - 7.3
-        this.crane = new MyCrane(this, 7, 4);
-        this.floorD = new MyTerrain(this, 10);
-        this.floorR = new MyTerrain(this, CAR_LEN + 2);
+
+          // formula to get the this.rotationArm final value
+      		// this.height * Math.cos(30 * degToRad) - this.range * Math.sin(this.rotationArm * degToRad) - 2.05 = this.carHeight;
+          this.angleArm = Math.asin(-(CAR_HEIGHT + 2.05 - CRANE_HEIGHT * Math.cos(30 * degToRad)) / CRANE_RANGE);
+
+        this.crane = new MyCrane(this, CRANE_HEIGHT, CRANE_RANGE, this.angleArm);
+        this.floorD = new MyQuad(this);
+        this.floorR = new MyQuad(this);
 
 
         // Materials
@@ -76,6 +86,10 @@ class LightingScene extends CGFscene {
         this.floorRAppearance = new CGFappearance(this);
         this.floorRAppearance.loadTexture("../resources/images/floorR.jpg");
 
+        // crane
+        this.craneAppearance = new CGFappearance(this);
+        this.craneAppearance.loadTexture("../resources/images/crane.jpg");
+
         // PL6 - 4.2
         this.setUpdatePeriod(UPDATE_MS);
 
@@ -93,6 +107,9 @@ class LightingScene extends CGFscene {
 
         // PL6 - 4.2
         this.carSpeed = 0.0;
+
+        // PL6 - 7.3
+        this.craneMove = false;
     };
 
     // PL6 - 3.4
@@ -167,6 +184,11 @@ class LightingScene extends CGFscene {
             else
                 this.vehicle.frontWheelsAngle = nextAngle;
         }
+
+        // Crane moves
+        if(this.gui.isKeyPressed("KeyR")) {
+          this.craneMoveDR = true;
+        }
     }
 
     handleCar() {
@@ -175,9 +197,14 @@ class LightingScene extends CGFscene {
     }
 
     update() {
+    handleCrane() {
+        this.crane.update();
+    }
+
         // PL6 - 4.2
         this.checkKeys();
         this.handleCar();
+        this.handleCrane();
     }
 
     initCameras() {
@@ -262,23 +289,30 @@ class LightingScene extends CGFscene {
             this.rotate(30 * degToRad, 0, 1, 0);
             this.vehicle.display();
         this.popMatrix();
+        if (!this.crane.flagCar) {
+          this.pushMatrix();
+              this.translate(10, 0, 10);
+              this.vehicle.display();
+          this.popMatrix();
+        }
 
         // PL6 - 7.3
         this.pushMatrix();
-            this.translate(0, 0, 0);
+            // this.translate(0, 0, 0);
+            this.craneAppearance.apply();
             this.crane.display();
         this.popMatrix();
 
         this.pushMatrix();
-          this.translate(0, 0, -9);
-          this.scale(10, 1, 10);
+          this.translate(0, 0.1, -CRANE_HEIGHT * Math.sin(30 * degToRad) - CRANE_RANGE * 1.25);
+          this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
           this.rotate(-90 * degToRad, 1, 0, 0);
           this.floorDAppearance.apply();
           this.floorD.display();
         this.popMatrix();
 
         this.pushMatrix();
-          this.translate(0, 0, CAR_LEN + 2);
+          this.translate(0, 0.1, CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75);
           this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
           this.rotate(-90 * degToRad, 1, 0, 0);
           this.floorRAppearance.apply();
