@@ -10,7 +10,7 @@ class MyWheels extends CGFobject {
         this.axisZ = axisZ / wheelThickness * 0.5;
         this.wheelRadius = wheelRadius;
 
-        this.frontWheelsAngle = 0;
+        this.frontWheelsAngle = 0.0;
 
 		this.cylinder = new MyCylinder(this.scene, 100, 2);
 		this.circle = new MyCircle(this.scene, 100);
