@@ -89,12 +89,12 @@ class MyVehicle extends CGFobject {
         this.scene.blackAppearance.setAmbient(0.5, 0.5, 0.5,1);
         this.scene.blackAppearance.setDiffuse(0.5, 0.5, 0.5,1);
 
-        // yellow
-        this.scene.yellowAppearance = new CGFappearance(this.scene);
-        this.scene.yellowAppearance.loadTexture("../resources/images/yellow.jpg");
-        this.scene.yellowAppearance.setSpecular(0.4,0.4,0.4,1);
-        this.scene.yellowAppearance.setAmbient(0.5, 0.5, 0.5,1);
-        this.scene.yellowAppearance.setDiffuse(0.5, 0.5, 0.5,1);
+        // orange
+        this.scene.orangeAppearance = new CGFappearance(this.scene);
+        this.scene.orangeAppearance.loadTexture("../resources/images/orange.jpg");
+        this.scene.orangeAppearance.setSpecular(0.4,0.4,0.4,1);
+        this.scene.orangeAppearance.setAmbient(0.5, 0.5, 0.5,1);
+        this.scene.orangeAppearance.setDiffuse(0.5, 0.5, 0.5,1);
 
         // green
         this.scene.greenAppearance = new CGFappearance(this.scene);
@@ -143,7 +143,7 @@ class MyVehicle extends CGFobject {
             break;
 
           case this.scene.vehicleAppearances[1]:
-            this.scene.yellowAppearance.apply();
+            this.scene.orangeAppearance.apply();
             break;
 
           case this.scene.vehicleAppearances[2]:
