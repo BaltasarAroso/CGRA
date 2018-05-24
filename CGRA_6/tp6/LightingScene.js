@@ -3,7 +3,6 @@ const degToRad = Math.PI / 180.0;
 const TERRAIN_UNITS = 50;
 const LIGHT_HEIGHT = 20;
 
-
 const UPDATE_MS = 30.0;
 
 const CAR_LEN = 4;
@@ -196,14 +195,16 @@ class LightingScene extends CGFscene {
         this.vehicle.update();
     }
 
-    update() {
     handleCrane() {
         this.crane.update();
     }
 
+    update() {
         // PL6 - 4.2
         this.checkKeys();
         this.handleCar();
+
+        // PL6 - 7.3
         this.handleCrane();
     }
 
@@ -248,77 +249,73 @@ class LightingScene extends CGFscene {
         this.lightCorner4 ? this.lights[4].enable() : this.lights[4].disable();
     }
 
-	display() {
-		// ---- BEGIN Background, camera and axis setup
+    display() {
+    	// ---- BEGIN Background, camera and axis setup
 
-		// Clear image and depth buffer everytime we update the scene
-		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    	// Clear image and depth buffer everytime we update the scene
+    	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+    	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-		// Initialize Model-View matrix as identity (no transformation)
-		this.updateProjectionMatrix();
-		this.loadIdentity();
+    	// Initialize Model-View matrix as identity (no transformation)
+    	this.updateProjectionMatrix();
+    	this.loadIdentity();
 
-		// Apply transformations corresponding to the camera position relative to the origin
-		this.applyViewMatrix();
+    	// Apply transformations corresponding to the camera position relative to the origin
+    	this.applyViewMatrix();
 
-		// Update all lights used
-		this.updateLights();
+    	// Update all lights used
+    	this.updateLights();
 
-		// Draw axis   +   PL6 - 3.4
-		if(this.axisState) this.axis.display();
+    	// Draw axis   +   PL6 - 3.4
+    	if(this.axisState) this.axis.display();
 
-		this.materialDefault.apply();
+    	this.materialDefault.apply();
 
-		// ---- END Background, camera and axis setup
+    	// ---- END Background, camera and axis setup
 
-        // ---- BEGIN Scene drawing section
+          // ---- BEGIN Scene drawing section
 
-        // PL6 - 1.2
-        this.pushMatrix();
-            this.terrainAppearance.apply();
-            this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
-            this.rotate(-90 * degToRad, 1, 0, 0);
-            this.terrain.display();
-        this.popMatrix();
-
-        // PL6 - 2.4
-        this.pushMatrix();
-            this.translate(10, 0, 10);
-            this.translate(-TERRAIN_UNITS / 3, 0, TERRAIN_UNITS / 3);
-            this.rotate(30 * degToRad, 0, 1, 0);
-            this.vehicle.display();
-        this.popMatrix();
-        if (!this.crane.flagCar) {
+          // PL6 - 1.2
           this.pushMatrix();
-              this.translate(10, 0, 10);
-              this.vehicle.display();
+              this.terrainAppearance.apply();
+              this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
+              this.rotate(-90 * degToRad, 1, 0, 0);
+              this.terrain.display();
           this.popMatrix();
-        }
 
-        // PL6 - 7.3
-        this.pushMatrix();
-            // this.translate(0, 0, 0);
-            this.craneAppearance.apply();
-            this.crane.display();
-        this.popMatrix();
+          // PL6 - 7.3
+          if (!this.crane.flagCar) {
+            // PL6 - 2.4
+            this.pushMatrix();
+              this.translate(-TERRAIN_UNITS / 3, 0, TERRAIN_UNITS / 3);
+              this.rotate(30 * degToRad, 0, 1, 0);
+              this.vehicle.display();
+            this.popMatrix();
+          }
 
-        this.pushMatrix();
-          this.translate(0, 0.1, -CRANE_HEIGHT * Math.sin(30 * degToRad) - CRANE_RANGE * 1.25);
-          this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
-          this.rotate(-90 * degToRad, 1, 0, 0);
-          this.floorDAppearance.apply();
-          this.floorD.display();
-        this.popMatrix();
+          // PL6 - 7.3
+          this.pushMatrix();
+              // this.translate(0, 0, 0);
+              this.craneAppearance.apply();
+              this.crane.display();
+          this.popMatrix();
 
-        this.pushMatrix();
-          this.translate(0, 0.1, CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75);
-          this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
-          this.rotate(-90 * degToRad, 1, 0, 0);
-          this.floorRAppearance.apply();
-          this.floorR.display();
-        this.popMatrix();
+          this.pushMatrix();
+            this.translate(0, 0.1, -CRANE_HEIGHT * Math.sin(30 * degToRad) - CRANE_RANGE * 1.25);
+            this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
+            this.rotate(-90 * degToRad, 1, 0, 0);
+            this.floorDAppearance.apply();
+            this.floorD.display();
+          this.popMatrix();
 
-		// ---- END Scene drawing section
-	};
+          this.pushMatrix();
+            this.translate(0, 0.1, CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75);
+            this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
+            this.rotate(-90 * degToRad, 1, 0, 0);
+            this.floorRAppearance.apply();
+            this.floorR.display();
+          this.popMatrix();
+
+    	// ---- END Scene drawing section
+    };
 }
