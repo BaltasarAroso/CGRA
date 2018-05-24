@@ -84,18 +84,18 @@ class LightingScene extends CGFscene {
 
 
         if(this.gui.isKeyPressed("KeyW"))
-            this.carSpeed + SPEED_INCREMENT_SEC * UPDATE_MS / 1000 < FORWARD_MAXSPEED ?
-                (this.carSpeed += SPEED_INCREMENT_SEC * UPDATE_MS / 1000) : (this.carSpeed = FORWARD_MAXSPEED);
+            this.carSpeed + SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0 < FORWARD_MAXSPEED ?
+                (this.carSpeed += SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0) : (this.carSpeed = FORWARD_MAXSPEED);
 
         if(this.gui.isKeyPressed("KeyS"))
-            this.carSpeed - SPEED_INCREMENT_SEC * UPDATE_MS / 1000 > -BACKWARD_MAXSPEED ?
-                (this.carSpeed -= SPEED_INCREMENT_SEC * UPDATE_MS / 1000) : (this.carSpeed = -BACKWARD_MAXSPEED);
+            this.carSpeed - SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0 > -BACKWARD_MAXSPEED ?
+                (this.carSpeed -= SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0) : (this.carSpeed = -BACKWARD_MAXSPEED);
 
         if(this.gui.isKeyPressed("Space")) {
             let nextSpeed = 0;
 
             if(this.carSpeed > 0) {
-                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000));
+                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000.0));
 
                 if(nextSpeed < 0 || this.carSpeed < FORWARD_MAXSPEED*0.2)
                     this.carSpeed = 0;
@@ -103,7 +103,7 @@ class LightingScene extends CGFscene {
                     this.carSpeed = nextSpeed;
 
             } else if(this.carSpeed < 0) {
-                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000));
+                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000.0));
 
                 if(nextSpeed > 0 || this.carSpeed > -FORWARD_MAXSPEED*0.2)
                     this.carSpeed = 0;
@@ -117,7 +117,7 @@ class LightingScene extends CGFscene {
             let sign = 1;  // Check if moving forwards or backwards
             if(this.carSpeed < 0) sign = -1;
 
-            let nextAngle = this.vehicle.frontWheelsAngle - (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000) * sign;
+            let nextAngle = this.vehicle.frontWheelsAngle - (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * sign;
 
             if(nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES || nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES)
                 this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - sign*TURN_MAX_DEGREES;
@@ -129,7 +129,7 @@ class LightingScene extends CGFscene {
             let sign = 1;  // Check if moving forwards or backwards
             if(this.carSpeed < 0) sign = -1;
 
-            let nextAngle = this.vehicle.frontWheelsAngle + (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000) * sign;
+            let nextAngle = this.vehicle.frontWheelsAngle + (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * sign;
 
             if(nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES || nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES)
                 this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + sign*TURN_MAX_DEGREES;
