@@ -91,8 +91,27 @@ class LightingScene extends CGFscene {
             this.carSpeed - SPEED_INCREMENT_SEC * UPDATE_MS / 1000 > -BACKWARD_MAXSPEED ?
                 (this.carSpeed -= SPEED_INCREMENT_SEC * UPDATE_MS / 1000) : (this.carSpeed = -BACKWARD_MAXSPEED);
 
-        if(this.gui.isKeyPressed("Space"))
-            this.carSpeed = 0;
+        if(this.gui.isKeyPressed("Space")) {
+            let nextSpeed = 0;
+
+            if(this.carSpeed > 0) {
+                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000));
+
+                if(nextSpeed < 0 || this.carSpeed < FORWARD_MAXSPEED*0.2)
+                    this.carSpeed = 0;
+                else
+                    this.carSpeed = nextSpeed;
+
+            } else if(this.carSpeed < 0) {
+                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000));
+
+                if(nextSpeed > 0 || this.carSpeed > -FORWARD_MAXSPEED*0.2)
+                    this.carSpeed = 0;
+                else
+                    this.carSpeed = nextSpeed;
+            }
+
+        }
 
         if(this.gui.isKeyPressed("KeyD")) {
             let sign = 1;  // Check if moving forwards or backwards
