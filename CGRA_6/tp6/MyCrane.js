@@ -22,7 +22,9 @@ class MyCrane extends CGFobject {
 			this.rotationDR += 20 * UPDATE_MS / 1000.0;
 			this.rotationArm += (this.angleArm * 20 * UPDATE_MS / 1000.0) / Math.PI;
 		}
-		if (this.rotationDR > 180) /* && this.scene.vehicle.pos.x == 0 && this.scene.vehicle.pos.z == CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75 && this.scene.carSpeed == 0)*/ {
+		if (this.rotationDR > 180 &&
+		(this.scene.vehicle.pos.x - TERRAIN_UNITS / 3) < 4 && (this.scene.vehicle.pos.x - TERRAIN_UNITS / 3) > 0 &&
+		this.scene.carSpeed == 0) {
 			this.flagCar = true;
 			this.scene.craneMoveDR = false;
 		}
@@ -159,7 +161,7 @@ class MyCrane extends CGFobject {
 		if (this.flagCar) {
 			this.scene.pushMatrix();
 					// 0.1 -> floorR & 0.3 -> iman
-					this.scene.translate(0, - CAR_HEIGHT - 0.1 - 0.3, 0);
+					this.scene.translate(-this.scene.vehicle.pos.x, - CAR_HEIGHT - 0.1 - 0.3, -this.scene.vehicle.pos.z);
 					this.scene.vehicle.display();
 			this.scene.popMatrix();
 		}

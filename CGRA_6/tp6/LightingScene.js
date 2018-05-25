@@ -200,9 +200,11 @@ class LightingScene extends CGFscene {
     }
 
     update() {
-        // PL6 - 4.2
-        this.checkKeys();
-        this.handleCar();
+        if (!this.crane.flagCar) {
+          // PL6 - 4.2
+          this.checkKeys();
+          this.handleCar();
+        }
 
         // PL6 - 7.3
         this.handleCrane();
