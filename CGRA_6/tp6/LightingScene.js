@@ -49,33 +49,21 @@ class LightingScene extends CGFscene {
           this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
         }
 
-        // PL6 - 6.3
-        this.altimetry= [[ 2.0 , 3.0 , 2.0, 4.0, 2.5, 2.4, 2.3, 1.3 ],
-                         [ 2.0 , 3.0 , 2.0, 4.0, 7.5, 6.4, 4.3, 1.3 ],
-                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-                         [ 0.0 , 0.0 , 2.0, 4.0, 2.5, 2.4, 0.0, 0.0 ],
-                         [ 0.0 , 0.0 , 2.0, 4.0, 3.5, 2.4, 0.0, 0.0 ],
-                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-                         [ 2.0 , 3.0 , 2.0, 1.0, 2.5, 2.4, 2.3, 1.3 ]
-                        ];
+        // PL6 - 7.3
+        // formula to get the this.rotationArm final value
+        	// this.height * Math.cos(30 * degToRad) - this.range * Math.sin(this.rotationArm * degToRad) - 2.05 = this.carHeight;
+        this.angleArm = Math.asin(-(CAR_HEIGHT + 2.05 - CRANE_HEIGHT * Math.cos(30 * degToRad)) / CRANE_RANGE);
 
-        // Scene elements
 
-        // Terrain - PL6 - 1.2
+        /* Scene elements */
+
+        // PL6 - 1.2
         this.terrain = new MyTerrain(this, TERRAIN_UNITS);
 
         // PL6 - 2.4
         this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
-        // this.vehicle = new MyVehicle(this, 8, 4.5, 3, 4.5, 4.5, 1, 0.5);
 
         // PL6 - 7.3
-
-          // formula to get the this.rotationArm final value
-      		// this.height * Math.cos(30 * degToRad) - this.range * Math.sin(this.rotationArm * degToRad) - 2.05 = this.carHeight;
-          this.angleArm = Math.asin(-(CAR_HEIGHT + 2.05 - CRANE_HEIGHT * Math.cos(30 * degToRad)) / CRANE_RANGE);
-
         this.crane = new MyCrane(this, CRANE_HEIGHT, CRANE_RANGE, this.angleArm);
         this.floorD = new MyQuad(this);
         this.floorR = new MyQuad(this);
@@ -84,7 +72,8 @@ class LightingScene extends CGFscene {
         this.vehicle.pos.y = 0;
         this.vehicle.pos.z = TERRAIN_UNITS / 3;
 
-        // Materials
+
+        /* Materials */
         this.materialDefault = new CGFappearance(this);
 
         // terrain
@@ -103,6 +92,7 @@ class LightingScene extends CGFscene {
         // crane
         this.craneAppearance = new CGFappearance(this);
         this.craneAppearance.loadTexture("../resources/images/crane.jpg");
+
 
         // PL6 - 4.2
         this.setUpdatePeriod(UPDATE_MS);
@@ -300,54 +290,43 @@ class LightingScene extends CGFscene {
 
     	// ---- END Background, camera and axis setup
 
-          // ---- BEGIN Scene drawing section
+            // ---- BEGIN Scene drawing section
 
-          // PL6 - 1.2
-          this.pushMatrix();
-              this.terrainAppearance.apply();
-              this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
-              this.rotate(-90 * degToRad, 1, 0, 0);
-              this.terrain.display();
-          this.popMatrix();
-
-          // PL6 - 7.3
-          if (!this.crane.flagCar) {
-            // PL6 - 2.4
+            // PL6 - 1.2
             this.pushMatrix();
-              this.translate(-TERRAIN_UNITS / 3, 0, TERRAIN_UNITS / 3);
-              this.rotate(30 * degToRad, 0, 1, 0);
-              this.vehicle.display();
+                this.terrainAppearance.apply();
+                this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
+                this.rotate(-90 * degToRad, 1, 0, 0);
+                this.terrain.display();
             this.popMatrix();
-          }
 
-          // PL6 - 7.3
-          this.pushMatrix();
-              // this.translate(0, 0, 0);
-              this.craneAppearance.apply();
-              this.crane.display();
-          this.popMatrix();
+            // PL6 - 7.3
+            if (!this.crane.flagCar) {
+                this.vehicle.display(); // PL6 - 2.4
+            }
 
-          this.pushMatrix();
-            this.translate(0, 0.1, -CRANE_HEIGHT * Math.sin(30 * degToRad) - CRANE_RANGE * 1.25);
-            this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
-            this.rotate(-90 * degToRad, 1, 0, 0);
-            this.floorDAppearance.apply();
-            this.floorD.display();
-          this.popMatrix();
+            // PL6 - 7.3
+            this.pushMatrix();
+                this.craneAppearance.apply();
+                this.crane.display();
+            this.popMatrix();
 
-          this.pushMatrix();
-            this.translate(0, 0.1, CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75);
-            this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
-            this.rotate(-90 * degToRad, 1, 0, 0);
-            this.floorRAppearance.apply();
-            this.floorR.display();
-          this.popMatrix();
+            this.pushMatrix();
+                this.translate(0, 0.1, -CRANE_HEIGHT * Math.sin(30 * degToRad) - CRANE_RANGE * 1.25);
+                this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
+                this.rotate(-90 * degToRad, 1, 0, 0);
+                this.floorDAppearance.apply();
+                this.floorD.display();
+            this.popMatrix();
+
+            this.pushMatrix();
+                this.translate(0, 0.1, CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75);
+                this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
+                this.rotate(-90 * degToRad, 1, 0, 0);
+                this.floorRAppearance.apply();
+                this.floorR.display();
+            this.popMatrix();
 
     	// ---- END Scene drawing section
     };
-        // PL6 - 2.4
-        this.vehicle.display();
-
-		// ---- END Scene drawing section
-	};
 }

@@ -5,14 +5,18 @@
 class MyCrane extends CGFobject {
 	constructor(scene, height = 1, range = 1, angleArm = 1) {
 		super(scene);
+
+		/** Static Parameters **/
 		this.height = height;
 		this.range = range;
-		this.rotationDR = 0; // in degrees (180)
-		this.rotationArm = 0; // in radians
 		this.angleArm = angleArm;
 
+		/** Dynamic Parameters **/
+		this.rotationDR = 0; // in degrees (180)
+		this.rotationArm = 0; // in radians
 		this.flagCar = false;
 
+		/** Elements **/
 		this.cylinder = new MyCylinder(this.scene, 100, 2);
 		this.circle = new MyCircle(this.scene, 100);
 	};
@@ -22,16 +26,21 @@ class MyCrane extends CGFobject {
 			this.rotationDR += 20 * UPDATE_MS / 1000.0;
 			this.rotationArm += (this.angleArm * 20 * UPDATE_MS / 1000.0) / Math.PI;
 		}
+
 		if (this.rotationDR > 180 &&
-		(this.scene.vehicle.pos.x - TERRAIN_UNITS / 3) < 4 && (this.scene.vehicle.pos.x - TERRAIN_UNITS / 3) > 0 &&
+		this.scene.vehicle.pos.x < 2 && this.scene.vehicle.pos.x > -2 &&
+		this.scene.vehicle.pos.z < CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75 + (CAR_LEN + 2) / 2 &&
+		this.scene.vehicle.pos.z > CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75 - (CAR_LEN + 2) / 2 &&
 		this.scene.carSpeed == 0) {
 			this.flagCar = true;
 			this.scene.craneMoveDR = false;
 		}
+
 		if (this.flagCar) {
-			this.rotationDR -= 1;
-			this.rotationArm -= this.angleArm / Math.PI;
+			this.rotationDR -= 20 * UPDATE_MS / 1000.0;
+			this.rotationArm -= (this.angleArm * 20 * UPDATE_MS / 1000.0) / Math.PI;
 		}
+
 		if (this.rotationDR < 0) {
 			this.flagCar = false;
 		}
@@ -56,7 +65,7 @@ class MyCrane extends CGFobject {
 			// bottom base
 			this.scene.pushMatrix();
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
-        this.scene.rotate(180 * degToRad, 1, 0, 0);
+        		this.scene.rotate(180 * degToRad, 1, 0, 0);
 				this.circle.display();
 			this.scene.popMatrix();
 
@@ -160,9 +169,9 @@ class MyCrane extends CGFobject {
 
 		if (this.flagCar) {
 			this.scene.pushMatrix();
-					// 0.1 -> floorR & 0.3 -> iman
-					this.scene.translate(-this.scene.vehicle.pos.x, - CAR_HEIGHT - 0.1 - 0.3, -this.scene.vehicle.pos.z);
-					this.scene.vehicle.display();
+				// 0.1 -> floorR & 0.3 -> iman
+				this.scene.translate(-this.scene.vehicle.pos.x, - CAR_HEIGHT - 0.1 - 0.3, -this.scene.vehicle.pos.z);
+				this.scene.vehicle.display();
 			this.scene.popMatrix();
 		}
 

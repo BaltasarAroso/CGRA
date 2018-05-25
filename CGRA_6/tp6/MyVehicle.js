@@ -39,7 +39,7 @@ class MyVehicle extends CGFobject {
 
 
         /** Dynamic Parameters **/
-
+        
         this.carSpeed = 0;
         this.pos = {x: 0.0, y: 0.0, z: 0.0};
 
@@ -97,6 +97,7 @@ class MyVehicle extends CGFobject {
         this.scene.bodyWorkAppearance.setAmbient(0.5, 0.5, 0.5, 1);
         this.scene.bodyWorkAppearance.setDiffuse(0.5, 0.5, 0.5, 1);
 
+        // controls different textures
         this.scene.vehicleTextureAppearance = {};
         for (let i = 0; i < this.scene.vehicleAppearances.length; i++) {
           this.scene.vehicleTextureAppearance[i] = new CGFappearance(this.scene);
@@ -116,6 +117,8 @@ class MyVehicle extends CGFobject {
     }
 
     display() {
+
+        this.scene.pushMatrix()
 
         this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
 
@@ -149,6 +152,8 @@ class MyVehicle extends CGFobject {
             this.scene.translate(this.len / 2, this.wheelRadius + this.height * 0.65 - 0.25, 0);
             this.scene.scale(this.len * 0.25 * 0.25, this.height * 0.65 * 0.25, this.width * 0.45 * 0.25);
             this.myHeadlights.display();
+        this.scene.popMatrix();
+
         this.scene.popMatrix();
     };
 }

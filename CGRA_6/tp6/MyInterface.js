@@ -37,6 +37,7 @@ class MyInterface extends CGFinterface {
         // group.add(this.scene, 'lightMarkersDisplay');
 
         this.gui.add(this.scene, 'carSpeed', -BACKWARD_MAXSPEED, FORWARD_MAXSPEED).listen();
+        
         // PL6 - 5.2
         this.gui.add(this.scene, 'currVehicleAppearance', this.scene.vehicleAppearances);
 
