@@ -80,6 +80,9 @@ class LightingScene extends CGFscene {
         this.floorD = new MyQuad(this);
         this.floorR = new MyQuad(this);
 
+        this.vehicle.pos.x = -TERRAIN_UNITS / 3;
+        this.vehicle.pos.y = 0;
+        this.vehicle.pos.z = TERRAIN_UNITS / 3;
 
         // Materials
         this.materialDefault = new CGFappearance(this);
@@ -173,25 +176,35 @@ class LightingScene extends CGFscene {
         }
 
         if(this.gui.isKeyPressed("KeyD")) {
-            let sign = 1;  // Check if moving forwards or backwards
-            if(this.carSpeed < 0) sign = -1;
+            let speedFactor;
+            if(this.carSpeed < 0)
+                speedFactor = (-1 -0.75*this.carSpeed/BACKWARD_MAXSPEED);
+            else
+                speedFactor = (1 - 0.5*this.carSpeed/FORWARD_MAXSPEED);
 
-            let nextAngle = this.vehicle.frontWheelsAngle - (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * sign;
+            let nextAngle = this.vehicle.frontWheelsAngle - (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * speedFactor;
 
             if(nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES || nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES)
-                this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - sign*TURN_MAX_DEGREES;
+                this.carSpeed < 0 ?
+                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + TURN_MAX_DEGREES :
+                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - TURN_MAX_DEGREES;
             else
                 this.vehicle.frontWheelsAngle = nextAngle;
         }
 
         if(this.gui.isKeyPressed("KeyA")) {
-            let sign = 1;  // Check if moving forwards or backwards
-            if(this.carSpeed < 0) sign = -1;
+            let speedFactor;
+            if(this.carSpeed < 0)
+                speedFactor = (-1 -0.75*this.carSpeed/BACKWARD_MAXSPEED);
+            else
+                speedFactor = (1 - 0.5*this.carSpeed/FORWARD_MAXSPEED);
 
-            let nextAngle = this.vehicle.frontWheelsAngle + (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * sign;
+            let nextAngle = this.vehicle.frontWheelsAngle + (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * speedFactor;
 
             if(nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES || nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES)
-                this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + sign*TURN_MAX_DEGREES;
+                this.carSpeed < 0 ?
+                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - TURN_MAX_DEGREES :
+                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + TURN_MAX_DEGREES;
             else
                 this.vehicle.frontWheelsAngle = nextAngle;
         }
@@ -332,4 +345,9 @@ class LightingScene extends CGFscene {
 
     	// ---- END Scene drawing section
     };
+        // PL6 - 2.4
+        this.vehicle.display();
+
+		// ---- END Scene drawing section
+	};
 }

@@ -55,7 +55,7 @@ class MyVehicle extends CGFobject {
             /** Direction **/
             if(this.frontWheelsAngle !== this.steerAngle) {
                 let diffAngleFrac;
-                let speedFactor = (FORWARD_MAXSPEED / 2 + Math.abs(this.carSpeed)) / (3 * FORWARD_MAXSPEED / 2);
+                let speedFactor = (FORWARD_MAXSPEED*0.10 + 2*Math.abs(this.carSpeed)) / (1.1*FORWARD_MAXSPEED);
 
                 if(this.frontWheelsAngle > this.steerAngle) {  // Turning Left
                     diffAngleFrac = (this.frontWheelsAngle - this.steerAngle) * TURN_SPEED_PERCENT * speedFactor;
@@ -76,7 +76,7 @@ class MyVehicle extends CGFobject {
             }
 
             /** Movement **/
-            let angle = ((this.frontWheelsAngle + this.steerAngle) / 2) * degToRad;
+            let angle = this.steerAngle * degToRad;
             this.pos.x = this.pos.x + Math.cos(angle) * (this.carSpeed * UPDATE_MS / 1000);
             this.pos.z = this.pos.z - Math.sin(angle) * (this.carSpeed * UPDATE_MS / 1000);
         }
