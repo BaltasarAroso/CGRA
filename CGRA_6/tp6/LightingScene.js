@@ -44,10 +44,22 @@ class LightingScene extends CGFscene {
         this.vehicleAppearances = ["black", "orange", "green", "blue"];
         this.currVehicleAppearance = this.vehicleAppearances[0];
 
-        // this.vehicleAppearanceList = {};
-        // for (let i = 0; i < this.vehicleAppearances.length; i++) {
-        //   this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
-        // }
+        this.vehicleAppearanceList = {};
+        for (let i = 0; i < this.vehicleAppearances.length; i++) {
+          this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
+        }
+
+        // PL6 - 6.3
+        this.altimetry= [[ 2.0 , 3.0 , 2.0, 4.0, 2.5, 2.4, 2.3, 1.3 ],
+                         [ 2.0 , 3.0 , 2.0, 4.0, 7.5, 6.4, 4.3, 1.3 ],
+                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+                         [ 0.0 , 0.0 , 2.0, 4.0, 2.5, 2.4, 0.0, 0.0 ],
+                         [ 0.0 , 0.0 , 2.0, 4.0, 3.5, 2.4, 0.0, 0.0 ],
+                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+                         [ 0.0 , 0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+                         [ 2.0 , 3.0 , 2.0, 1.0, 2.5, 2.4, 2.3, 1.3 ]
+                        ];
 
         // Scene elements
 
