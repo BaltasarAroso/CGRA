@@ -15,6 +15,9 @@ const CAR_WHEELTHICKNESS = 0.25;
 
 const CRANE_HEIGHT = 10;
 const CRANE_RANGE = 7;
+const CRANE_VERTICAL_ANGLE = 30;
+const CRANE_ARM_RADIUS = 0.5;
+
 const FLOORD_SIZE = 10;
 
 class LightingScene extends CGFscene {
@@ -40,80 +43,74 @@ class LightingScene extends CGFscene {
 
         this.enableTextures(true);
 
-        // PL6 - 5.2
-        this.vehicleAppearances = ["black", "orange", "green", "blue"];
-        this.currVehicleAppearance = this.vehicleAppearances[0];
+        // ---- BEGIN Variables initialization
+            // PL6 - 3.3
+            this.lightCenter = true;
+            this.lightCorner1 = true;
+            this.lightCorner2 = true;
+            this.lightCorner3 = true;
+            this.lightCorner4 = true;
+            this.lightMarkersState = false;
 
-        this.vehicleAppearanceList = {};
-        for (let i = 0; i < this.vehicleAppearances.length; i++) {
-          this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
-        }
+            // PL6 - 3.4
+            this.axisState = false;
 
-        // PL6 - 7.3
-        // formula to get the this.rotationArm final value
-        	// this.height * Math.cos(30 * degToRad) - this.range * Math.sin(this.rotationArm * degToRad) - 2.05 = this.carHeight;
-        this.angleArm = Math.asin(-(CAR_HEIGHT + 2.05 - CRANE_HEIGHT * Math.cos(30 * degToRad)) / CRANE_RANGE);
+            // PL6 - 4.2
+            this.setUpdatePeriod(UPDATE_MS);
+            this.carSpeed = 0.0;
 
+            // PL6 - 5.2
+            this.vehicleAppearances = ["black", "orange", "green", "blue"];
+            this.currVehicleAppearance = this.vehicleAppearances[0];
+            this.vehicleAppearanceList = {};
+            for (let i = 0; i < this.vehicleAppearances.length; i++) {
+              this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
+            }
 
-        /* Scene elements */
-
-        // PL6 - 1.2
-        this.terrain = new MyTerrain(this, TERRAIN_UNITS);
-
-        // PL6 - 2.4
-        this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
-
-        // PL6 - 7.3
-        this.crane = new MyCrane(this, CRANE_HEIGHT, CRANE_RANGE, this.angleArm);
-        this.floorD = new MyQuad(this);
-        this.floorR = new MyQuad(this);
-
-        this.vehicle.pos.x = -TERRAIN_UNITS / 3;
-        this.vehicle.pos.y = 0;
-        this.vehicle.pos.z = TERRAIN_UNITS / 3;
+            // PL6 - 7.3
+            this.craneMove = false;
+        // ---- END Variables initialization
 
 
-        /* Materials */
-        this.materialDefault = new CGFappearance(this);
+        // ---- BEGIN Scene elements
+            // PL6 - 1.2
+            this.terrain = new MyTerrain(this, TERRAIN_UNITS);
 
-        // terrain
-        this.terrainAppearance = new CGFappearance(this);
-        this.terrainAppearance.loadTexture("../resources/images/grass.png");
-        this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
+            // PL6 - 2.4
+            this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
 
-        // floorD
-        this.floorDAppearance = new CGFappearance(this);
-        this.floorDAppearance.loadTexture("../resources/images/floorD.jpg");
+            // PL6 - 7.3
+            this.crane = new MyCrane(this);
+            this.floorD = new MyQuad(this);
+            this.floorR = new MyQuad(this);
 
-        // floorR
-        this.floorRAppearance = new CGFappearance(this);
-        this.floorRAppearance.loadTexture("../resources/images/floorR.jpg");
-
-        // crane
-        this.craneAppearance = new CGFappearance(this);
-        this.craneAppearance.loadTexture("../resources/images/crane.jpg");
+            this.vehicle.pos.x = -TERRAIN_UNITS / 3;
+            this.vehicle.pos.y = 0;
+            this.vehicle.pos.z = TERRAIN_UNITS / 3;
+        // ---- END Scene elements
 
 
-        // PL6 - 4.2
-        this.setUpdatePeriod(UPDATE_MS);
+        // ---- BEGIN Materials initialization
+            this.materialDefault = new CGFappearance(this);
 
-        // PL6 - 3.3
-        this.lightCenter = true;
-        this.lightCorner1 = true;
-        this.lightCorner2 = true;
-        this.lightCorner3 = true;
-        this.lightCorner4 = true;
+            // terrain
+            this.terrainAppearance = new CGFappearance(this);
+            this.terrainAppearance.loadTexture("../resources/images/grass.png");
+            this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-        this.lightMarkersState = false;
+            // floorD
+            this.floorDAppearance = new CGFappearance(this);
+            this.floorDAppearance.loadTexture("../resources/images/floorD.jpg");
 
-        // PL6 - 3.4
-        this.axisState = false;
+            // floorR
+            this.floorRAppearance = new CGFappearance(this);
+            this.floorRAppearance.loadTexture("../resources/images/floorR.jpg");
 
-        // PL6 - 4.2
-        this.carSpeed = 0.0;
+            // crane
+            this.craneAppearance = new CGFappearance(this);
+            this.craneAppearance.loadTexture("../resources/images/crane.jpg");
+        // ---- END Materials initialization
 
-        // PL6 - 7.3
-        this.craneMove = false;
     };
 
     // PL6 - 3.4
@@ -199,7 +196,7 @@ class LightingScene extends CGFscene {
                 this.vehicle.frontWheelsAngle = nextAngle;
         }
 
-        // Crane moves
+        // Crane movement
         if(this.gui.isKeyPressed("KeyR")) {
           this.craneMoveDR = true;
         }
@@ -267,30 +264,32 @@ class LightingScene extends CGFscene {
     }
 
     display() {
+
     	// ---- BEGIN Background, camera and axis setup
 
-    	// Clear image and depth buffer everytime we update the scene
-    	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-    	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        	// Clear image and depth buffer everytime we update the scene
+        	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+        	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-    	// Initialize Model-View matrix as identity (no transformation)
-    	this.updateProjectionMatrix();
-    	this.loadIdentity();
+        	// Initialize Model-View matrix as identity (no transformation)
+        	this.updateProjectionMatrix();
+        	this.loadIdentity();
 
-    	// Apply transformations corresponding to the camera position relative to the origin
-    	this.applyViewMatrix();
+        	// Apply transformations corresponding to the camera position relative to the origin
+        	this.applyViewMatrix();
 
-    	// Update all lights used
-    	this.updateLights();
+        	// Update all lights used
+        	this.updateLights();
 
-    	// Draw axis   +   PL6 - 3.4
-    	if(this.axisState) this.axis.display();
+        	// Draw axis   +   PL6 - 3.4
+        	if(this.axisState) this.axis.display();
 
-    	this.materialDefault.apply();
+        	this.materialDefault.apply();
 
     	// ---- END Background, camera and axis setup
 
-            // ---- BEGIN Scene drawing section
+
+        // ---- BEGIN Scene drawing section
 
             // PL6 - 1.2
             this.pushMatrix();
@@ -312,7 +311,7 @@ class LightingScene extends CGFscene {
             this.popMatrix();
 
             this.pushMatrix();
-                this.translate(0, 0.1, -CRANE_HEIGHT * Math.sin(30 * degToRad) - CRANE_RANGE * 1.25);
+                this.translate(0, 0.1, -(this.crane.verticalArmRange + this.crane.landingArmLen));
                 this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
                 this.rotate(-90 * degToRad, 1, 0, 0);
                 this.floorDAppearance.apply();
@@ -320,13 +319,20 @@ class LightingScene extends CGFscene {
             this.popMatrix();
 
             this.pushMatrix();
-                this.translate(0, 0.1, CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75);
+                this.translate(
+                    0,
+                    0.1,
+                    this.crane.verticalArmRange +
+                    this.crane.landingArmLen * Math.cos(this.crane.landingArmAngle) +
+                    this.crane.pulleyRadius
+                );
                 this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
                 this.rotate(-90 * degToRad, 1, 0, 0);
                 this.floorRAppearance.apply();
                 this.floorR.display();
             this.popMatrix();
 
-    	// ---- END Scene drawing section
+        // ---- END Scene drawing section
+
     };
 }

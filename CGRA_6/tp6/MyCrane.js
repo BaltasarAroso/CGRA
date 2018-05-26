@@ -3,16 +3,32 @@
  * @constructor
  */
 class MyCrane extends CGFobject {
-	constructor(scene, height = 1, range = 1, angleArm = 1) {
+	constructor(scene) {
 		super(scene);
 
 		/** Static Parameters **/
-		this.height = height;
-		this.range = range;
-		this.angleArm = angleArm;
+		this.height = CRANE_HEIGHT;
+		this.landingArmLen = CRANE_RANGE;
+		this.verticalArmAngle = CRANE_VERTICAL_ANGLE;
+		this.armRadius = CRANE_ARM_RADIUS;
 
-		/** Dynamic Parameters **/
-		this.rotationDR = 0; // in degrees (180)
+		/** Dynamic Parameters - Dimensions **/
+		this.pulleyRadius = 2 * this.armRadius;
+		this.pulleyThickness = 2 * this.armRadius;
+		this.pendingCableLen = 4 * this.armRadius;
+		this.imanRadius = 1.5 * this.armRadius;
+		this.imanThickness = this.pulleyThickness / 4;
+		this.verticalArmLen = CRANE_HEIGHT / Math.cos(this.verticalArmAngle * degToRad);
+		this.verticalArmRange = this.verticalArmLen * Math.sin(this.verticalArmAngle * degToRad);
+
+		this.landingArmAngle = Math.asin(
+			(CRANE_HEIGHT
+			- 0.1 - CAR_HEIGHT - this.imanThickness - this.pendingCableLen
+			) / CRANE_RANGE
+		);
+
+		/** Dynamic Parameters - Movement **/
+		this.rotationDR = 0; // in degrees (rotation of 180º)
 		this.rotationArm = 0; // in radians
 		this.flagCar = false;
 
@@ -22,43 +38,54 @@ class MyCrane extends CGFobject {
 	};
 
 	update () {
+		/** D -> R Movement **/
 		if (this.scene.craneMoveDR && this.rotationDR <= 180) {
 			this.rotationDR += 20 * UPDATE_MS / 1000.0;
-			this.rotationArm += (this.angleArm * 20 * UPDATE_MS / 1000.0) / Math.PI;
+			this.rotationArm += (this.landingArmAngle * 20 * UPDATE_MS / 1000.0) / Math.PI;
 		}
 
+		/** Car in FloorR verification **/
 		if (this.rotationDR > 180 &&
 		this.scene.vehicle.pos.x < 2 && this.scene.vehicle.pos.x > -2 &&
-		this.scene.vehicle.pos.z < CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75 + (CAR_LEN + 2) / 2 &&
-		this.scene.vehicle.pos.z > CRANE_HEIGHT * Math.sin(30 * degToRad) + CRANE_RANGE * Math.cos(this.angleArm) + 0.75 - (CAR_LEN + 2) / 2 &&
+		this.scene.vehicle.pos.z <  (this.verticalArmRange +
+									this.landingArmLen * Math.cos(this.landingArmAngle) +
+									this.pulleyRadius) + CAR_LEN / 2 &&
+		this.scene.vehicle.pos.z > (this.verticalArmRange +
+									this.landingArmLen * Math.cos(this.landingArmAngle) +
+									this.pulleyRadius) - CAR_LEN / 2 &&
 		this.scene.carSpeed == 0) {
 			this.flagCar = true;
 			this.scene.craneMoveDR = false;
 		}
 
+		/** R -> D Movement with the Car **/
 		if (this.flagCar) {
 			this.rotationDR -= 20 * UPDATE_MS / 1000.0;
-			this.rotationArm -= (this.angleArm * 20 * UPDATE_MS / 1000.0) / Math.PI;
+			this.rotationArm -= (this.landingArmAngle * 20 * UPDATE_MS / 1000.0) / Math.PI;
 		}
 
+		/** Set the initial state (D) **/
 		if (this.rotationDR < 0) {
 			this.flagCar = false;
 		}
 	}
 
 	display() {
+
 		this.scene.rotate(-this.rotationDR * degToRad, 0, 1, 0);
 
 		// bottom
 		this.scene.pushMatrix();
+			this.scene.scale(this.pulleyRadius, this.pulleyThickness, this.pulleyRadius);
 			this.scene.rotate(-90 * degToRad, 1, 0, 0);
 			this.cylinder.display();
 		this.scene.popMatrix();
 
 			// top base
 			this.scene.pushMatrix();
-				this.scene.translate(0, 1, 0);
+				this.scene.translate(0, this.pulleyThickness, 0);
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
+				this.scene.scale(this.pulleyRadius, this.pulleyRadius, this.pulleyRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
@@ -66,25 +93,31 @@ class MyCrane extends CGFobject {
 			this.scene.pushMatrix();
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
         		this.scene.rotate(180 * degToRad, 1, 0, 0);
+				this.scene.scale(this.pulleyRadius, this.pulleyRadius, this.pulleyRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
-		// first
+		// vertical arm
 		this.scene.pushMatrix();
-			this.scene.translate(0, 0.5, 0.5 * Math.sin(30 * degToRad));
-			this.scene.rotate(-120 * degToRad, 1, 0, 0);
-			this.scene.scale(0.5, 0.5, this.height);
+			this.scene.translate(
+				0,
+				this.armRadius * Math.cos(this.verticalArmAngle * degToRad),
+				this.armRadius * Math.sin(this.verticalArmAngle * degToRad)
+			);
+			this.scene.rotate( -(90 + this.verticalArmAngle) * degToRad, 1, 0, 0);
+			this.scene.scale(this.armRadius, this.armRadius, this.verticalArmLen);
 			this.cylinder.display();
 		this.scene.popMatrix();
 
 		this.scene.translate(
-			-0.5,
-			this.height * Math.cos(30 * degToRad) + 0.5,
-			-(this.height * Math.sin(30 * degToRad) + 0.25)
+			-this.armRadius,
+			this.height + this.pulleyRadius,
+			-this.verticalArmRange - this.pulleyRadius/4
 		);
 
-		// top wheel
+		// top pulley
 		this.scene.pushMatrix();
+			this.scene.scale(this.pulleyThickness, this.pulleyRadius, this.pulleyRadius);
 			this.scene.rotate(90 * degToRad, 0, 1, 0);
 			this.cylinder.display();
 		this.scene.popMatrix();
@@ -93,31 +126,33 @@ class MyCrane extends CGFobject {
 			this.scene.pushMatrix();
 				this.scene.rotate(90 * degToRad, 0, 1, 0);
 				this.scene.rotate(180 * degToRad, 1, 0, 0);
+				this.scene.scale(this.pulleyRadius, this.pulleyRadius, this.pulleyRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
-			this.scene.translate(1, 0, 0);
+			this.scene.translate(this.pulleyThickness, 0, 0);
 
 			// front base
 			this.scene.pushMatrix();
 				this.scene.rotate(90 * degToRad, 0, 1, 0);
+				this.scene.scale(this.pulleyRadius, this.pulleyRadius, this.pulleyRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
 		// translation for the Arm rotation
 		this.scene.translate(
 			0,
-			- this.range * Math.sin(this.rotationArm * degToRad),
-			this.range - this.range * 0.9 * Math.cos(this.rotationArm * degToRad)
+			- this.landingArmLen * Math.sin(this.rotationArm * degToRad),
+			this.landingArmLen - this.landingArmLen * 0.9 * Math.cos(this.rotationArm * degToRad)
 		);
 
-		// 0.5 -> top wheel radius & this.range + 0.75 -> landing arm size + to be together the top wheel
-		this.scene.translate(-0.5, 0, - (this.range + 0.75));
+		// to insert the landing arm in the top pulley
+		this.scene.translate(- this.armRadius, 0, - this.landingArmLen - this.pulleyRadius * 0.75);
 
 		// landing arm
 		this.scene.pushMatrix();
 			this.scene.rotate(-this.rotationArm * degToRad, 1, 0, 0);
-			this.scene.scale(0.5, 0.5, this.range);
+			this.scene.scale(this.armRadius, this.armRadius, this.landingArmLen);
 			this.cylinder.display();
 		this.scene.popMatrix();
 
@@ -125,52 +160,50 @@ class MyCrane extends CGFobject {
 			this.scene.pushMatrix();
 				this.scene.rotate(180 * degToRad, 1, 0, 0);
 				this.scene.rotate(-this.rotationArm * degToRad, 1, 0, 0);
-				this.scene.scale(0.5, 0.5, 0.5);
+				this.scene.scale(this.armRadius, this.armRadius, this.armRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
-		// 0.25 -> to insert the landing arm in the top wheel
-		this.scene.translate(0, 0.25, 0);
+		// to insert the pending cable arm in the landing arm
+		this.scene.translate(0, this.armRadius/2, 0);
 
 		// pending cable
 		this.scene.pushMatrix();
 			this.scene.rotate(90 * degToRad, 1, 0, 0);
-			this.scene.scale(0.1, 0.1, 2);
+			this.scene.scale(this.armRadius / 5, this.armRadius / 5, this.pendingCableLen);
 			this.cylinder.display();
 		this.scene.popMatrix();
 
-		// 2 -> pending cable len
-		this.scene.translate(0, -2, 0);
+		this.scene.translate(0, -this.pendingCableLen, 0);
 
 		// iman
 		this.scene.pushMatrix();
 			this.scene.rotate(90 * degToRad, 1, 0, 0);
-			this.scene.scale(0.7, 0.7, 0.2);
+			this.scene.scale(this.imanRadius, this.imanRadius, this.imanThickness);
 			this.cylinder.display();
 		this.scene.popMatrix();
 
 			// top base
 			this.scene.pushMatrix();
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
-				this.scene.scale(0.7, 0.7, 0.7);
+				this.scene.scale(this.imanRadius, this.imanRadius, this.imanRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
-			// 0.3 -> iman thickness
-			this.scene.translate(0, -0.3, 0);
+			this.scene.translate(0, -this.imanThickness, 0);
 
 			// bottom base
 			this.scene.pushMatrix();
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
 				this.scene.rotate(180 * degToRad, 1, 0, 0);
-				this.scene.scale(0.7, 0.7, 0.7);
+				this.scene.scale(this.imanRadius, this.imanRadius, this.imanRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
 		if (this.flagCar) {
 			this.scene.pushMatrix();
-				// 0.1 -> floorR & 0.3 -> iman
-				this.scene.translate(-this.scene.vehicle.pos.x, - CAR_HEIGHT - 0.1 - 0.3, -this.scene.vehicle.pos.z);
+				// 0.1 from floorR height
+				this.scene.translate(-this.scene.vehicle.pos.x, - 0.1 - CAR_HEIGHT - this.imanThickness, -this.scene.vehicle.pos.z);
 				this.scene.vehicle.display();
 			this.scene.popMatrix();
 		}
