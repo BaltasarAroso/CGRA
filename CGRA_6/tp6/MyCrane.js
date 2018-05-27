@@ -22,7 +22,7 @@ class MyCrane extends CGFobject {
 		this.verticalArmRange = this.verticalArmLen * Math.sin(this.verticalArmAngle * degToRad);
 
 		this.landingArmAngle = Math.asin(
-			(CRANE_HEIGHT
+			(CRANE_HEIGHT + this.pulleyThickness - this.armRadius/2
 			- 0.1 - CAR_HEIGHT - this.magnetThickness - this.pendingCableLen
 			) / CRANE_RANGE
 		);
@@ -31,6 +31,7 @@ class MyCrane extends CGFobject {
 		this.rotationDR = 0; // in degrees (rotation of 180º)
 		this.rotationArm = 0; // in radians
 		this.flagCar = false;
+		this.carFall = false;
 
 		/** Elements **/
 		this.cylinder = new MyCylinder(this.scene, 100, 2);
@@ -65,7 +66,23 @@ class MyCrane extends CGFobject {
 		}
 
 		/** Set the initial state (D) **/
-		if (this.rotationDR < 0) {
+		if (this.rotationDR <= 0 && this.flagCar) {
+			this.flagCar = false;
+			this.carFall = true;
+			this.scene.vehicle.pos.x = 0;
+			this.scene.vehicle.pos.y = CRANE_HEIGHT
+										- this.magnetThickness - this.pendingCableLen * 0.9;
+			this.scene.vehicle.pos.z = -(this.verticalArmRange + this.landingArmLen);
+		}
+
+		/** Car Fall **/
+		if (this.carFall) {
+			this.scene.vehicle.pos.y -= 1;
+		}
+
+		/** Crane work finished **/
+		if (this.scene.vehicle.pos.y <= 0 && this.rotationDR <= 0 && this.scene.vehicle.pos.z == -(this.verticalArmRange + this.landingArmLen)) {
+			this.carFall = false;
 			this.flagCar = false;
 		}
 	}
@@ -202,8 +219,8 @@ class MyCrane extends CGFobject {
 
 		if (this.flagCar) {
 			this.scene.pushMatrix();
-				// 0.1 from floorR height
-				this.scene.translate(-this.scene.vehicle.pos.x, - 0.1 - CAR_HEIGHT - this.magnetThickness, -this.scene.vehicle.pos.z);
+				this.scene.rotate(180 * degToRad, 0, 1, 0);
+				this.scene.translate(-this.scene.vehicle.pos.x, - 0.25 - CAR_HEIGHT - this.magnetThickness, -this.scene.vehicle.pos.z);
 				this.scene.vehicle.display();
 			this.scene.popMatrix();
 		}
