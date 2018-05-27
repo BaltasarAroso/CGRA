@@ -1,7 +1,7 @@
 /** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
 class Plane extends CGFobject {
 
-    constructor(scene, nrDivs, width, height, ph_width, ph_height) {
+    constructor(scene, nrDivs, width = 1, height = 1, ph_width = 1, ph_height = 1) {
         super(scene);
 
         // nrDivs = 1 if not provided
@@ -27,13 +27,13 @@ class Plane extends CGFobject {
                         y
                         ^
                         |
-                 0   1  |   2   3
+                 0   1  |  2   3
                         |
-                 4   5  |   6   7
-                --------|-----------> x
-                 8   9  |  10  11
+                 4   5  |  6   7
+               ---------|-----------> x
+                 8   9  | 10  11
                         |
-                12  13  |  14  15
+                12  13  | 14  15
 
                 */
 

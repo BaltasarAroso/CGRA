@@ -11,6 +11,7 @@ class MyWheels extends CGFobject {
         this.wheelRadius = wheelRadius;
 
         this.frontWheelsAngle = 0.0;
+        this.rotationAngle = 0.0;
 
 		this.cylinder = new MyCylinder(this.scene, 100, 2);
 		this.circle = new MyCircle(this.scene, 100);
@@ -38,6 +39,7 @@ class MyWheels extends CGFobject {
         this.scene.pushMatrix();
             this.scene.translate(this.axisX, 0, this.axisZ);
             this.scene.rotate(this.frontWheelsAngle * degToRad, 0, 1, 0);
+            this.scene.rotate(-this.rotationAngle * degToRad, 0, 0, 1);
             this.cylinder.display();
         this.scene.popMatrix();
 
@@ -48,6 +50,7 @@ class MyWheels extends CGFobject {
             this.scene.translate(this.axisX, 0, this.axisZ);
             this.scene.rotate(this.frontWheelsAngle * degToRad, 0, 1, 0);
             this.scene.rotate(180 * degToRad, 1, 0, 0);
+            this.scene.rotate(-this.rotationAngle * degToRad, 0, 0, 1);
             this.circle.display();
         this.scene.popMatrix();
 
@@ -56,17 +59,19 @@ class MyWheels extends CGFobject {
             this.scene.translate(this.axisX, 0, this.axisZ + 1);
             this.scene.translate(0, 0, -2*this.wheelRadius);
             this.scene.rotate(this.frontWheelsAngle * degToRad, 0, 1, 0);
+            this.scene.rotate(-this.rotationAngle * degToRad, 0, 0, 1);
             this.scene.translate(0, 0, 2*this.wheelRadius);
             this.circle.display();
         this.scene.popMatrix();
 
 
-        /** Front right wheel **/
+        /** Front left wheel **/
         this.scene.tireAppearance.apply();
 
         this.scene.pushMatrix();
             this.scene.translate(this.axisX, 0, -this.axisZ);
             this.scene.rotate(this.frontWheelsAngle * degToRad, 0, 1, 0);
+            this.scene.rotate(this.rotationAngle * degToRad, 0, 0, 1);
             this.cylinder.display();
         this.scene.popMatrix();
 
@@ -77,6 +82,7 @@ class MyWheels extends CGFobject {
             this.scene.translate(this.axisX, 0, -this.axisZ + 1);
             this.scene.translate(0, 0, -2*this.wheelRadius);
             this.scene.rotate(this.frontWheelsAngle * degToRad, 0, 1, 0);
+            this.scene.rotate(this.rotationAngle * degToRad, 0, 0, 1);
             this.scene.translate(0, 0, 2*this.wheelRadius);
             this.circle.display();
         this.scene.popMatrix();
@@ -86,6 +92,7 @@ class MyWheels extends CGFobject {
             this.scene.translate(this.axisX, 0, -this.axisZ);
             this.scene.rotate(this.frontWheelsAngle * degToRad, 0, 1, 0);
             this.scene.rotate(180 * degToRad, 1, 0, 0);
+            this.scene.rotate(this.rotationAngle * degToRad, 0, 0, 1);
             this.circle.display();
         this.scene.popMatrix();
 
@@ -95,6 +102,7 @@ class MyWheels extends CGFobject {
 
         this.scene.pushMatrix();
             this.scene.translate(-this.axisX, 0, this.axisZ);
+            this.scene.rotate(-this.rotationAngle * degToRad, 0, 0, 1);
             this.cylinder.display();
         this.scene.popMatrix();
 
@@ -104,12 +112,14 @@ class MyWheels extends CGFobject {
         this.scene.pushMatrix();
             this.scene.translate(-this.axisX, 0, this.axisZ);
             this.scene.rotate(180 * degToRad, 1, 0, 0);
+            this.scene.rotate(-this.rotationAngle * degToRad, 0, 0, 1);
             this.circle.display();
         this.scene.popMatrix();
 
         // outter base
         this.scene.pushMatrix();
             this.scene.translate(-this.axisX, 0, this.axisZ + 1);
+            this.scene.rotate(-this.rotationAngle * degToRad, 0, 0, 1);
             this.circle.display();
         this.scene.popMatrix();
 
@@ -119,6 +129,7 @@ class MyWheels extends CGFobject {
 
         this.scene.pushMatrix();
             this.scene.translate(-this.axisX, 0, -this.axisZ);
+            this.scene.rotate(this.rotationAngle * degToRad, 0, 0, 1);
             this.cylinder.display();
         this.scene.popMatrix();
 
@@ -127,6 +138,7 @@ class MyWheels extends CGFobject {
         // inner base
         this.scene.pushMatrix();
             this.scene.translate(-this.axisX, 0, -this.axisZ + 1);
+            this.scene.rotate(this.rotationAngle * degToRad, 0, 0, 1);
             this.circle.display();
         this.scene.popMatrix();
 
@@ -134,6 +146,7 @@ class MyWheels extends CGFobject {
         this.scene.pushMatrix();
             this.scene.translate(-this.axisX, 0, -this.axisZ);
             this.scene.rotate(180 * degToRad, 1, 0, 0);
+            this.scene.rotate(this.rotationAngle * degToRad, 0, 0, 1);
             this.circle.display();
         this.scene.popMatrix();
   };
