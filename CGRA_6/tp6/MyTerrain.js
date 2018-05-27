@@ -81,8 +81,8 @@ class MyTerrain extends Plane {
         }
 
         console.log("Patch length = " + this.patchLength);
-        console.log(this.altimetry);
-        console.log(this.texCoords);
+        console.log("Altimetry = " + JSON.stringify(this.altimetry));
+        console.log("texCoords = " + JSON.stringify(this.texCoords));
 
         this.initGLBuffers();
     }
