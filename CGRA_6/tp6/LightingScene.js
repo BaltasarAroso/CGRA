@@ -77,6 +77,9 @@ class LightingScene extends CGFscene {
 
         // PL6 - 2.4
         this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
+        this.vehicle.pos.x = -TERRAIN_UNITS / 3;
+        this.vehicle.pos.y = 0;
+        this.vehicle.pos.z = TERRAIN_UNITS / 3;
 
         // PL6 - 6.1
         // //example for nrDivs = 8 -> grid of 9x9 vertices
@@ -123,10 +126,6 @@ class LightingScene extends CGFscene {
         this.crane = new MyCrane(this);
         this.floorD = new MyQuad(this);
         this.floorR = new MyQuad(this);
-
-        this.vehicle.pos.x = -TERRAIN_UNITS / 3;
-        this.vehicle.pos.y = 0;
-        this.vehicle.pos.z = TERRAIN_UNITS / 3;
 
 
         /** Materials **/
