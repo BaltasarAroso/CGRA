@@ -62,7 +62,7 @@ class LightingScene extends CGFscene {
         this.carSpeed = 0.0;
 
         // PL6 - 5.2
-        this.vehicleAppearances = ["black", "orange", "green", "blue"];
+        this.vehicleAppearances = ["black", "orange", "green", "blue", "red"];
         this.currVehicleAppearance = this.vehicleAppearances[0];
         this.vehicleAppearanceList = {};
         for (let i = 0; i < this.vehicleAppearances.length; i++) {

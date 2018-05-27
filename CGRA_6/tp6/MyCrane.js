@@ -200,10 +200,10 @@ class MyCrane extends CGFobject {
 				this.circle.display();
 			this.scene.popMatrix();
 
-		if (this.flagCar) {
+		if(this.flagCar) {
 			this.scene.pushMatrix();
 				// 0.1 from floorR height
-				this.scene.translate(-this.scene.vehicle.pos.x, - 0.1 - CAR_HEIGHT - this.magnetThickness, -this.scene.vehicle.pos.z);
+				this.scene.translate(-this.scene.vehicle.pos.x, -0.1 - CAR_HEIGHT - this.magnetThickness, -this.scene.vehicle.pos.z);
 				this.scene.vehicle.display();
 			this.scene.popMatrix();
 		}
