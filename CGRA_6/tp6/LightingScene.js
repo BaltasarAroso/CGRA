@@ -44,40 +44,39 @@ class LightingScene extends CGFscene {
         this.enableTextures(true);
 
         // ---- BEGIN Variables initialization
-            // PL6 - 3.3
-            this.lightCenter = true;
-            this.lightCorner1 = true;
-            this.lightCorner2 = true;
-            this.lightCorner3 = true;
-            this.lightCorner4 = true;
-            this.lightMarkersState = false;
+        // PL6 - 3.3
+        this.lightCenter = true;
+        this.lightCorner1 = true;
+        this.lightCorner2 = true;
+        this.lightCorner3 = true;
+        this.lightCorner4 = true;
+        this.lightMarkersState = false;
 
-            // PL6 - 3.4
-            this.axisState = false;
+        // PL6 - 3.4
+        this.axisState = false;
 
-            // PL6 - 4.2
-            this.setUpdatePeriod(UPDATE_MS);
-            this.carSpeed = 0.0;
+        // PL6 - 4.2
+        this.setUpdatePeriod(UPDATE_MS);
+        this.carSpeed = 0.0;
 
-            // PL6 - 5.2
-            this.vehicleAppearances = ["black", "orange", "green", "blue"];
-            this.currVehicleAppearance = this.vehicleAppearances[0];
-            this.vehicleAppearanceList = {};
-            for (let i = 0; i < this.vehicleAppearances.length; i++) {
-              this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
-            }
+        // PL6 - 5.2
+        this.vehicleAppearances = ["black", "orange", "green", "blue"];
+        this.currVehicleAppearance = this.vehicleAppearances[0];
+        this.vehicleAppearanceList = {};
+        for (let i = 0; i < this.vehicleAppearances.length; i++) {
+          this.vehicleAppearanceList[this.vehicleAppearances[i]] = i;
+        }
 
-            // PL6 - 7.3
-            this.craneMove = false;
+        // PL6 - 7.3
+        this.craneMove = false;
         // ---- END Variables initialization
 
 
         // ---- BEGIN Scene elements
-            // PL6 - 1.2
-            this.terrain = new MyTerrain(this, TERRAIN_UNITS);
 
-            // PL6 - 2.4
-            this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
+        // PL6 - 2.4
+        this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
+
         // PL6 - 6.1
         // //example for nrDivs = 8 -> grid of 9x9 vertices
         // this.altimetry = [
@@ -119,36 +118,36 @@ class LightingScene extends CGFscene {
         // Terrain - PL6 - 1.2
         this.terrain = new MyTerrain(this, TERRAIN_UNITS, this.altimetry);
 
-            // PL6 - 7.3
-            this.crane = new MyCrane(this);
-            this.floorD = new MyQuad(this);
-            this.floorR = new MyQuad(this);
+        // PL6 - 7.3
+        this.crane = new MyCrane(this);
+        this.floorD = new MyQuad(this);
+        this.floorR = new MyQuad(this);
 
-            this.vehicle.pos.x = -TERRAIN_UNITS / 3;
-            this.vehicle.pos.y = 0;
-            this.vehicle.pos.z = TERRAIN_UNITS / 3;
+        this.vehicle.pos.x = -TERRAIN_UNITS / 3;
+        this.vehicle.pos.y = 0;
+        this.vehicle.pos.z = TERRAIN_UNITS / 3;
         // ---- END Scene elements
 
 
         // ---- BEGIN Materials initialization
-            this.materialDefault = new CGFappearance(this);
+        this.materialDefault = new CGFappearance(this);
 
-            // terrain
-            this.terrainAppearance = new CGFappearance(this);
-            this.terrainAppearance.loadTexture("../resources/images/grass.png");
-            this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
+        // terrain
+        this.terrainAppearance = new CGFappearance(this);
+        this.terrainAppearance.loadTexture("../resources/images/grass.png");
+        this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-            // floorD
-            this.floorDAppearance = new CGFappearance(this);
-            this.floorDAppearance.loadTexture("../resources/images/floorD.jpg");
+        // floorD
+        this.floorDAppearance = new CGFappearance(this);
+        this.floorDAppearance.loadTexture("../resources/images/floorD.jpg");
 
-            // floorR
-            this.floorRAppearance = new CGFappearance(this);
-            this.floorRAppearance.loadTexture("../resources/images/floorR.jpg");
+        // floorR
+        this.floorRAppearance = new CGFappearance(this);
+        this.floorRAppearance.loadTexture("../resources/images/floorR.jpg");
 
-            // crane
-            this.craneAppearance = new CGFappearance(this);
-            this.craneAppearance.loadTexture("../resources/images/crane.jpg");
+        // crane
+        this.craneAppearance = new CGFappearance(this);
+        this.craneAppearance.loadTexture("../resources/images/crane.jpg");
         // ---- END Materials initialization
 
     };
