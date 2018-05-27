@@ -16,14 +16,14 @@ class MyCrane extends CGFobject {
 		this.pulleyRadius = 2 * this.armRadius;
 		this.pulleyThickness = 2 * this.armRadius;
 		this.pendingCableLen = 4 * this.armRadius;
-		this.imanRadius = 1.5 * this.armRadius;
-		this.imanThickness = this.pulleyThickness / 4;
+		this.magnetRadius = 1.5 * this.armRadius;
+		this.magnetThickness = this.pulleyThickness / 4;
 		this.verticalArmLen = CRANE_HEIGHT / Math.cos(this.verticalArmAngle * degToRad);
 		this.verticalArmRange = this.verticalArmLen * Math.sin(this.verticalArmAngle * degToRad);
 
 		this.landingArmAngle = Math.asin(
 			(CRANE_HEIGHT
-			- 0.1 - CAR_HEIGHT - this.imanThickness - this.pendingCableLen
+			- 0.1 - CAR_HEIGHT - this.magnetThickness - this.pendingCableLen
 			) / CRANE_RANGE
 		);
 
@@ -176,37 +176,36 @@ class MyCrane extends CGFobject {
 
 		this.scene.translate(0, -this.pendingCableLen, 0);
 
-		// iman
+		// magnet
 		this.scene.pushMatrix();
 			this.scene.rotate(90 * degToRad, 1, 0, 0);
-			this.scene.scale(this.imanRadius, this.imanRadius, this.imanThickness);
+			this.scene.scale(this.magnetRadius, this.magnetRadius, this.magnetThickness);
 			this.cylinder.display();
 		this.scene.popMatrix();
 
 			// top base
 			this.scene.pushMatrix();
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
-				this.scene.scale(this.imanRadius, this.imanRadius, this.imanRadius);
+				this.scene.scale(this.magnetRadius, this.magnetRadius, this.magnetRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
-			this.scene.translate(0, -this.imanThickness, 0);
+			this.scene.translate(0, -this.magnetThickness, 0);
 
 			// bottom base
 			this.scene.pushMatrix();
 				this.scene.rotate(-90 * degToRad, 1, 0, 0);
 				this.scene.rotate(180 * degToRad, 1, 0, 0);
-				this.scene.scale(this.imanRadius, this.imanRadius, this.imanRadius);
+				this.scene.scale(this.magnetRadius, this.magnetRadius, this.magnetRadius);
 				this.circle.display();
 			this.scene.popMatrix();
 
 		if (this.flagCar) {
 			this.scene.pushMatrix();
 				// 0.1 from floorR height
-				this.scene.translate(-this.scene.vehicle.pos.x, - 0.1 - CAR_HEIGHT - this.imanThickness, -this.scene.vehicle.pos.z);
+				this.scene.translate(-this.scene.vehicle.pos.x, - 0.1 - CAR_HEIGHT - this.magnetThickness, -this.scene.vehicle.pos.z);
 				this.scene.vehicle.display();
 			this.scene.popMatrix();
 		}
-
   };
 }

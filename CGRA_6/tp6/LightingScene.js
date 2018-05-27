@@ -43,7 +43,9 @@ class LightingScene extends CGFscene {
 
         this.enableTextures(true);
 
-        // ---- BEGIN Variables initialization
+
+        /** Scene parameters **/
+
         // PL6 - 3.3
         this.lightCenter = true;
         this.lightCorner1 = true;
@@ -69,10 +71,9 @@ class LightingScene extends CGFscene {
 
         // PL6 - 7.3
         this.craneMove = false;
-        // ---- END Variables initialization
 
 
-        // ---- BEGIN Scene elements
+        /** Scene elements **/
 
         // PL6 - 2.4
         this.vehicle = new MyVehicle(this, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
@@ -91,7 +92,7 @@ class LightingScene extends CGFscene {
         //     [ 2.0, 3.0, 2.0, 1.0, 2.5, 2.4, 2.3, 1.3, 0.3 ]
         // ];
 
-        /** Generate pseudo-random altimetry at the borders of the map **/
+        //Generate pseudo-random altimetry at the borders of the map
         this.altimetry = [];
 
         for(let k = 0; k <= TERRAIN_UNITS; k++) {
@@ -126,10 +127,9 @@ class LightingScene extends CGFscene {
         this.vehicle.pos.x = -TERRAIN_UNITS / 3;
         this.vehicle.pos.y = 0;
         this.vehicle.pos.z = TERRAIN_UNITS / 3;
-        // ---- END Scene elements
 
 
-        // ---- BEGIN Materials initialization
+        /** Materials **/
         this.materialDefault = new CGFappearance(this);
 
         // terrain
@@ -148,8 +148,6 @@ class LightingScene extends CGFscene {
         // crane
         this.craneAppearance = new CGFappearance(this);
         this.craneAppearance.loadTexture("../resources/images/crane.jpg");
-        // ---- END Materials initialization
-
     };
 
     // PL6 - 3.4
@@ -304,31 +302,29 @@ class LightingScene extends CGFscene {
 
     display() {
 
-    	// ---- BEGIN Background, camera and axis setup
+    	/** Background, camera and axis setup **/
 
-        	// Clear image and depth buffer everytime we update the scene
-        	this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-        	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        // Clear image and depth buffer everytime we update the scene
+        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-        	// Initialize Model-View matrix as identity (no transformation)
-        	this.updateProjectionMatrix();
-        	this.loadIdentity();
+        // Initialize Model-View matrix as identity (no transformation)
+        this.updateProjectionMatrix();
+        this.loadIdentity();
 
-        	// Apply transformations corresponding to the camera position relative to the origin
-        	this.applyViewMatrix();
+        // Apply transformations corresponding to the camera position relative to the origin
+        this.applyViewMatrix();
 
-        	// Update all lights used
-        	this.updateLights();
+        // Update all lights used
+        this.updateLights();
 
-        	// Draw axis   +   PL6 - 3.4
-        	if(this.axisState) this.axis.display();
+        // Draw axis   +   PL6 - 3.4
+        if(this.axisState) this.axis.display();
 
-        	this.materialDefault.apply();
-
-    	// ---- END Background, camera and axis setup
+        this.materialDefault.apply();
 
 
-        // ---- BEGIN Scene drawing section
+        /** Scene drawing section **/
 
         // PL6 - 1.2
         this.pushMatrix();
@@ -371,7 +367,5 @@ class LightingScene extends CGFscene {
             this.floorRAppearance.apply();
             this.floorR.display();
         this.popMatrix();
-
-        // ---- END Scene drawing section
     };
 }
