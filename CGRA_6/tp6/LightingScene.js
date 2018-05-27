@@ -1,6 +1,6 @@
 const degToRad = Math.PI / 180.0;
 
-const TERRAIN_UNITS = 50;
+const TERRAIN_UNITS = 8;
 const LIGHT_HEIGHT = 20;
 
 
@@ -31,8 +31,22 @@ class LightingScene extends CGFscene {
 
         // Scene elements
 
+        // PL6 - 6.1
+        //example for nrDivs = 8 -> grid of 9x9 vertices
+        this.altimetry = [
+            [ 2.0, 3.0, 2.0, 4.0, 2.5, 2.4, 2.3, 1.3, 0.3 ],
+            [ 2.0, 3.0, 2.0, 4.0, 7.5, 6.4, 4.3, 1.3, 0.3 ],
+            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+            [ 0.0, 0.0, 2.0, 4.0, 2.5, 2.4, 0.0, 0.0, 0.0 ],
+            [ 0.0, 0.0, 2.0, 4.0, 3.5, 2.4, 0.0, 0.0, 0.0 ],
+            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+            [ 2.0, 3.0, 2.0, 1.0, 2.5, 2.4, 2.3, 1.3, 0.3 ]
+        ];
+
         // Terrain - PL6 - 1.2
-        this.terrain = new MyTerrain(this, TERRAIN_UNITS);
+        this.terrain = new MyTerrain(this, TERRAIN_UNITS, this.altimetry);
 
         // PL6 - 2.4
         this.vehicle = new MyVehicle(this, 4, 2.25, 1.5, 2.25, 2.25, 0.5, 0.25);
@@ -240,7 +254,9 @@ class LightingScene extends CGFscene {
         this.popMatrix();
 
         // PL6 - 2.4
-        this.vehicle.display();
+        this.pushMatrix();
+            this.vehicle.display();
+        this.popMatrix();
 
 		// ---- END Scene drawing section
 	};
