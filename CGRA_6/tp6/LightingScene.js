@@ -330,48 +330,6 @@ class LightingScene extends CGFscene {
 
         // ---- BEGIN Scene drawing section
 
-            // PL6 - 1.2
-            this.pushMatrix();
-                this.terrainAppearance.apply();
-                this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
-                this.rotate(-90 * degToRad, 1, 0, 0);
-                this.terrain.display();
-            this.popMatrix();
-
-            // PL6 - 7.3
-            if (!this.crane.flagCar) {
-                this.vehicle.display(); // PL6 - 2.4
-            }
-
-            // PL6 - 7.3
-            this.pushMatrix();
-                this.craneAppearance.apply();
-                this.crane.display();
-            this.popMatrix();
-
-            this.pushMatrix();
-                this.translate(0, 0.1, -(this.crane.verticalArmRange + this.crane.landingArmLen));
-                this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
-                this.rotate(-90 * degToRad, 1, 0, 0);
-                this.floorDAppearance.apply();
-                this.floorD.display();
-            this.popMatrix();
-
-            this.pushMatrix();
-                this.translate(
-                    0,
-                    0.1,
-                    this.crane.verticalArmRange +
-                    this.crane.landingArmLen * Math.cos(this.crane.landingArmAngle) +
-                    this.crane.pulleyRadius
-                );
-                this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
-                this.rotate(-90 * degToRad, 1, 0, 0);
-                this.floorRAppearance.apply();
-                this.floorR.display();
-            this.popMatrix();
-
-        // ---- END Scene drawing section
         // PL6 - 1.2
         this.pushMatrix();
             this.terrainAppearance.apply();
@@ -381,10 +339,39 @@ class LightingScene extends CGFscene {
             this.terrain.display();
         this.popMatrix();
 
-        // PL6 - 2.4
+        // PL6 - 7.3
+        if (!this.crane.flagCar) {
+            this.vehicle.display(); // PL6 - 2.4
+        }
+
+        // PL6 - 7.3
         this.pushMatrix();
-            this.vehicle.display();
+            this.craneAppearance.apply();
+            this.crane.display();
         this.popMatrix();
 
+        this.pushMatrix();
+            this.translate(0, 0.1, -(this.crane.verticalArmRange + this.crane.landingArmLen));
+            this.scale(FLOORD_SIZE, 1, FLOORD_SIZE);
+            this.rotate(-90 * degToRad, 1, 0, 0);
+            this.floorDAppearance.apply();
+            this.floorD.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+            this.translate(
+                0,
+                0.1,
+                this.crane.verticalArmRange +
+                this.crane.landingArmLen * Math.cos(this.crane.landingArmAngle) +
+                this.crane.pulleyRadius
+            );
+            this.scale(CAR_LEN + 2, 1, CAR_LEN + 2);
+            this.rotate(-90 * degToRad, 1, 0, 0);
+            this.floorRAppearance.apply();
+            this.floorR.display();
+        this.popMatrix();
+
+        // ---- END Scene drawing section
     };
 }
