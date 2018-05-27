@@ -111,7 +111,6 @@ class MyVehicle extends CGFobject {
           this.scene.vehicleTextureAppearance[i].setSpecular(0.4, 0.4, 0.4, 1);
           this.scene.vehicleTextureAppearance[i].setAmbient(0.5, 0.5, 0.5, 1);
           this.scene.vehicleTextureAppearance[i].setDiffuse(0.5, 0.5, 0.5, 1);
-          console.log(this.scene.vehicleTextureAppearance[i]);
         }
 
         // headlights
