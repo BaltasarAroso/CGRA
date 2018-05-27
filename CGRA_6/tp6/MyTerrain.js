@@ -35,54 +35,52 @@ class MyTerrain extends Plane {
         }
 
 
-        /** Override texCoords **/
-        this.texCoords.length = 0;
+        // /** Override texCoords **/
+        // this.texCoords.length = 0;
+        //
+        // // Iterate every row
+        //   // Iterate every column
+        // for(let i = 0; i < this.altimetry.length; i++) {
+        //     let sCoord = 0.0;
+        //
+        //     for (let j = 0; j < this.altimetry.length; j++) {
+        //         let sHeightFactor = 0;
+        //
+        //         this.texCoords.push(sCoord, 0.0);
+        //
+        //         if(j < this.altimetry.length - 1) {
+        //             sHeightFactor = (this.altimetry[i][j+1] - this.altimetry[i][j]) / this.maxHeight;
+        //             if(sHeightFactor < 0) sHeightFactor *= -1;
+        //         }
+        //
+        //         sCoord += this.patchLength * (1 + sHeightFactor);
+        //     }
+        // }
+        //
+        // // Iterate every column
+        //   // Iterate every row
+        // for(let j = 0; j < this.altimetry.length; j++) {
+        //     let tCoord = 0.0;
+        //     let tIndex = 1 + 2*j;
+        //
+        //     for (let i = 0; i < this.altimetry.length; i++) {
+        //         let tHeightFactor;
+        //
+        //         this.texCoords[tIndex] = tCoord;
+        //         tIndex += 2*this.altimetry.length;
+        //
+        //         if(i < this.altimetry.length - 1) {
+        //             tHeightFactor = (this.altimetry[i+1][j] - this.altimetry[i][j]) / this.maxHeight;
+        //             if(tHeightFactor < 0) tHeightFactor *= -1;
+        //         }
+        //
+        //         tCoord += this.patchLength * (1 + tHeightFactor);
+        //     }
+        // }
 
-        // let tCoord = 0.0;
-        for(let i = 0; i < this.altimetry.length; i++) {
-            let sCoord = 0.0;
-
-            for (let j = 0; j < this.altimetry.length; j++) {
-                let sHeightFactor = 0;
-                // let tHeightFactor = 0;
-
-                this.texCoords.push(sCoord, 0.0);
-
-                if(j < this.altimetry.length - 1) {
-                    sHeightFactor = (this.altimetry[i][j+1] - this.altimetry[i][j]) / this.maxHeight;
-                    if(sHeightFactor < 0) sHeightFactor *= -1;
-                }
-                // if(i < this.altimetry.length - 1) {
-                //     tHeightFactor = (this.altimetry[i+1][j] - this.altimetry[i][j]) / this.maxHeight;
-                //     if(tHeightFactor < 0) tHeightFactor *= -1;
-                // }
-
-                sCoord += this.patchLength * (1 + sHeightFactor);
-            }
-        }
-
-        for(let j = 0; j < this.altimetry.length; j++) {
-            let tCoord = 0.0;
-            let tIndex = 1 + 2*j;
-
-            for (let i = 0; i < this.altimetry.length; i++) {
-                let tHeightFactor;
-
-                this.texCoords[tIndex] = tCoord;
-                tIndex += 2*this.altimetry.length;
-
-                if(i < this.altimetry.length - 1) {
-                    tHeightFactor = (this.altimetry[i+1][j] - this.altimetry[i][j]) / this.maxHeight;
-                    if(tHeightFactor < 0) tHeightFactor *= -1;
-                }
-
-                tCoord += this.patchLength * (1 + tHeightFactor);
-            }
-        }
-
-        console.log("Patch length = " + this.patchLength);
-        console.log("Altimetry = " + JSON.stringify(this.altimetry));
-        console.log("texCoords = " + JSON.stringify(this.texCoords));
+        // console.log("Patch length = " + this.patchLength);
+        // console.log("Altimetry = " + JSON.stringify(this.altimetry));
+        // console.log("texCoords = " + JSON.stringify(this.texCoords));
 
         this.initGLBuffers();
     }
