@@ -4,6 +4,7 @@ const SPEED_INCREMENT_SEC = 15.0;
 const TURN_WHEEL_DEGREE_SEC = 500.0;
 const TURN_SPEED_PERCENT = 0.10;
 const TURN_MAX_DEGREES = 60.0;
+const ROTATION_MAX_DEGREE_SEC = 1000.0;
 const BRAKES_PERCENT_SEC = 10.00;
 
 
@@ -79,8 +80,13 @@ class MyVehicle extends CGFobject {
             let angle = this.steerAngle * degToRad;
             this.pos.x = this.pos.x + Math.cos(angle) * (this.carSpeed * UPDATE_MS / 1000);
             this.pos.z = this.pos.z - Math.sin(angle) * (this.carSpeed * UPDATE_MS / 1000);
+
+            /** Rotate wheels **/
+            let speedFactor = this.carSpeed / FORWARD_MAXSPEED;
+            this.myWheels.rotationAngle += speedFactor * ROTATION_MAX_DEGREE_SEC * UPDATE_MS / 1000;
         }
 
+        /** Turn wheels **/
         if(this.frontWheelsAngle !== this.steerAngle) {
             let sign = 1;
             if(this.carSpeed < 0) sign = -1;

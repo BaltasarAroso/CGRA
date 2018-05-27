@@ -1,6 +1,6 @@
 const degToRad = Math.PI / 180.0;
 
-const TERRAIN_UNITS = 8;
+const TERRAIN_UNITS = 50;
 const LIGHT_HEIGHT = 20;
 
 
@@ -32,18 +32,45 @@ class LightingScene extends CGFscene {
         // Scene elements
 
         // PL6 - 6.1
-        //example for nrDivs = 8 -> grid of 9x9 vertices
-        this.altimetry = [
-            [ 2.0, 3.0, 2.0, 4.0, 2.5, 2.4, 2.3, 1.3, 0.3 ],
-            [ 2.0, 3.0, 2.0, 4.0, 7.5, 6.4, 4.3, 1.3, 0.3 ],
-            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-            [ 0.0, 0.0, 2.0, 4.0, 2.5, 2.4, 0.0, 0.0, 0.0 ],
-            [ 0.0, 0.0, 2.0, 4.0, 3.5, 2.4, 0.0, 0.0, 0.0 ],
-            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-            [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
-            [ 2.0, 3.0, 2.0, 1.0, 2.5, 2.4, 2.3, 1.3, 0.3 ]
-        ];
+        // //example for nrDivs = 8 -> grid of 9x9 vertices
+        // this.altimetry = [
+        //     [ 2.0, 3.0, 2.0, 4.0, 2.5, 2.4, 2.3, 1.3, 0.3 ],
+        //     [ 2.0, 3.0, 2.0, 4.0, 7.5, 6.4, 4.3, 1.3, 0.3 ],
+        //     [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+        //     [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+        //     [ 0.0, 0.0, 2.0, 4.0, 2.5, 2.4, 0.0, 0.0, 0.0 ],
+        //     [ 0.0, 0.0, 2.0, 4.0, 3.5, 2.4, 0.0, 0.0, 0.0 ],
+        //     [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+        //     [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+        //     [ 2.0, 3.0, 2.0, 1.0, 2.5, 2.4, 2.3, 1.3, 0.3 ]
+        // ];
+
+        /** Generate pseudo-random altimetry at the borders of the map **/
+        this.altimetry = [];
+
+        for(let k = 0; k <= TERRAIN_UNITS; k++) {
+            this.altimetry[k] = [];
+            for(let l = 0; l <= TERRAIN_UNITS; l++) {
+                if(k < TERRAIN_UNITS*0.90 && k > TERRAIN_UNITS*0.10
+                        && l < TERRAIN_UNITS*0.90 && l > TERRAIN_UNITS*0.10) {
+                    this.altimetry[k][l] = 0.0;
+                } else {
+                    if(Math.random() < 0.65) {  // 65% chance
+                        this.altimetry[k][l] = Math.random()*(TERRAIN_UNITS/16);
+                    } else if(Math.random() < 0.90) {  // 25% chance
+                        this.altimetry[k][l] = Math.random() * (TERRAIN_UNITS / 8);
+                    } else if(Math.random() < 0.95) {  // 5% chance
+                        this.altimetry[k][l] = Math.random() * (TERRAIN_UNITS / 4);
+                    } else {  // 5% chance
+                        this.altimetry[k][l] = 0.0;
+                    }
+                }
+            }
+        }
+
+        // this.altimetry = [[0, 0, 0], [0, 1, 0], [0, 0, 0]];
+
+
 
         // Terrain - PL6 - 1.2
         this.terrain = new MyTerrain(this, TERRAIN_UNITS, this.altimetry);
@@ -248,8 +275,9 @@ class LightingScene extends CGFscene {
         // PL6 - 1.2
         this.pushMatrix();
             this.terrainAppearance.apply();
-            this.scale(TERRAIN_UNITS, 1, TERRAIN_UNITS);
+            this.scale(TERRAIN_UNITS, this.terrain.maxHeight, TERRAIN_UNITS);
             this.rotate(-90 * degToRad, 1, 0, 0);
+            this.rotate(90 * degToRad, 0, 0, 1);
             this.terrain.display();
         this.popMatrix();
 
