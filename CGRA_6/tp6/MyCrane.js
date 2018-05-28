@@ -47,13 +47,13 @@ class MyCrane extends CGFobject {
 
 		/** Car in FloorR verification **/
 		if (this.rotationDR > 180 &&
-		this.scene.vehicle.pos.x < 4 && this.scene.vehicle.pos.x > -4 &&
+		this.scene.vehicle.pos.x < CAR_LEN && this.scene.vehicle.pos.x > -CAR_LEN &&
 		this.scene.vehicle.pos.z <  (this.verticalArmRange +
 									this.landingArmLen * Math.cos(this.landingArmAngle) +
-									this.pulleyRadius) + CAR_LEN / 2 &&
+									this.pulleyRadius) + CAR_LEN * 0.75 &&
 		this.scene.vehicle.pos.z > (this.verticalArmRange +
 									this.landingArmLen * Math.cos(this.landingArmAngle) +
-									this.pulleyRadius) - CAR_LEN / 2 &&
+									this.pulleyRadius) - CAR_LEN * 0.75 &&
 		this.scene.carSpeed === 0) {
 			this.flagCar = true;
 			this.scene.craneMoveDR = false;
