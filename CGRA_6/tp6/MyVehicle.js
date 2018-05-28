@@ -47,6 +47,9 @@ class MyVehicle extends CGFobject {
         this.frontWheelsAngle = 0.0;  // direction of front wheels
         this.steerAngle = 0.0;  // direction of the car
 
+        this.wrecked = false;
+        this.wreckedAppearance = 0;
+
         this.init();
     };
 
@@ -123,7 +126,7 @@ class MyVehicle extends CGFobject {
 
     display() {
 
-        this.scene.pushMatrix()
+        this.scene.pushMatrix();
 
         this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
 
@@ -137,7 +140,11 @@ class MyVehicle extends CGFobject {
             this.myWheels.display();
         this.scene.popMatrix();
 
-        this.scene.vehicleTextureAppearance[this.scene.vehicleAppearanceList[this.scene.currVehicleAppearance]].apply();
+        if(this.wrecked) {
+            this.scene.vehicleTextureAppearance[this.wreckedAppearance].apply();
+        } else {
+            this.scene.vehicleTextureAppearance[this.scene.vehicleAppearanceList[this.scene.currVehicleAppearance]].apply();
+        }
 
         this.scene.pushMatrix();
             this.scene.translate(0, this.wheelRadius + this.height * 0.65 / 2, 0);

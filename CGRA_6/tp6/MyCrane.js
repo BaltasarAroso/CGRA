@@ -75,7 +75,8 @@ class MyCrane extends CGFobject {
 			this.scene.vehicle.pos.z = -(this.verticalArmRange + this.landingArmLen);
 
 			this.scene.wreckedCar = this.scene.vehicle;
-			this.scene.wrecked = true;
+			this.scene.wreckedCar.wrecked = true;
+			this.scene.wreckedCar.wreckedAppearance = this.scene.vehicleAppearanceList[this.scene.currVehicleAppearance];
 
             this.scene.vehicle = new MyVehicle(this.scene, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
             this.scene.vehicle.pos.x = -TERRAIN_UNITS / 3;
