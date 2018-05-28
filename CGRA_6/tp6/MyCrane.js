@@ -47,7 +47,7 @@ class MyCrane extends CGFobject {
 
 		/** Car in FloorR verification **/
 		if (this.rotationDR > 180 &&
-		this.scene.vehicle.pos.x < 2 && this.scene.vehicle.pos.x > -2 &&
+		this.scene.vehicle.pos.x < 4 && this.scene.vehicle.pos.x > -4 &&
 		this.scene.vehicle.pos.z <  (this.verticalArmRange +
 									this.landingArmLen * Math.cos(this.landingArmAngle) +
 									this.pulleyRadius) + CAR_LEN / 2 &&
