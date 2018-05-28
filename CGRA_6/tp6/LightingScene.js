@@ -81,6 +81,9 @@ class LightingScene extends CGFscene {
         this.vehicle.pos.y = 0;
         this.vehicle.pos.z = TERRAIN_UNITS / 3;
 
+        this.wreckedCar = null;
+        this.wrecked = false;
+
         // PL6 - 6.1
         // //example for nrDivs = 8 -> grid of 9x9 vertices
         // this.altimetry = [
@@ -366,5 +369,14 @@ class LightingScene extends CGFscene {
             this.floorRAppearance.apply();
             this.floorR.display();
         this.popMatrix();
+
+        if(this.wrecked) {
+            this.pushMatrix();
+                this.translate(this.wreckedCar.pos.x, this.wreckedCar.pos.y, this.wreckedCar.pos.z);
+                this.rotate(180 * degToRad, 0, 1, 0);
+                this.translate(-this.wreckedCar.pos.x, -this.wreckedCar.pos.y, -this.wreckedCar.pos.z);
+                this.wreckedCar.display();
+            this.popMatrix();
+        }
     };
 }

@@ -54,7 +54,7 @@ class MyCrane extends CGFobject {
 		this.scene.vehicle.pos.z > (this.verticalArmRange +
 									this.landingArmLen * Math.cos(this.landingArmAngle) +
 									this.pulleyRadius) - CAR_LEN / 2 &&
-		this.scene.carSpeed == 0) {
+		this.scene.carSpeed === 0) {
 			this.flagCar = true;
 			this.scene.craneMoveDR = false;
 		}
@@ -73,17 +73,26 @@ class MyCrane extends CGFobject {
 			this.scene.vehicle.pos.y = CRANE_HEIGHT
 										- this.magnetThickness - this.pendingCableLen * 0.9;
 			this.scene.vehicle.pos.z = -(this.verticalArmRange + this.landingArmLen);
+
+			this.scene.wreckedCar = this.scene.vehicle;
+			this.scene.wrecked = true;
+
+            this.scene.vehicle = new MyVehicle(this.scene, CAR_LEN, CAR_WIDTH, CAR_HEIGHT, CAR_AXISX, CAR_AXISZ, CAR_WHEELRADIUS, CAR_WHEELTHICKNESS);
+            this.scene.vehicle.pos.x = -TERRAIN_UNITS / 3;
+            this.scene.vehicle.pos.y = 0;
+            this.scene.vehicle.pos.z = TERRAIN_UNITS / 3;
 		}
 
 		/** Car Fall **/
 		if (this.carFall) {
-			this.scene.vehicle.pos.y -= 10 * UPDATE_MS / 1000.0;
-		}
+			this.scene.wreckedCar.pos.y -= 10 * UPDATE_MS / 1000.0;
 
-		/** Crane work finished **/
-		if (this.scene.vehicle.pos.y <= 0 && this.rotationDR <= 0 && this.scene.vehicle.pos.z == -(this.verticalArmRange + this.landingArmLen)) {
-			this.carFall = false;
-			this.flagCar = false;
+            /** Crane work finished **/
+            if (this.scene.wreckedCar.pos.y <= 0 && this.rotationDR <= 0
+                && this.scene.wreckedCar.pos.z === -(this.verticalArmRange + this.landingArmLen)) {
+                this.carFall = false;
+                this.flagCar = false;
+            }
 		}
 	}
 
