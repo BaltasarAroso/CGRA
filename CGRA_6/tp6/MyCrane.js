@@ -77,7 +77,7 @@ class MyCrane extends CGFobject {
 
 		/** Car Fall **/
 		if (this.carFall) {
-			this.scene.vehicle.pos.y -= 1;
+			this.scene.vehicle.pos.y -= 10 * UPDATE_MS / 1000.0;
 		}
 
 		/** Crane work finished **/
