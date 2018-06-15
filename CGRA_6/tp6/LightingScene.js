@@ -170,73 +170,77 @@ class LightingScene extends CGFscene {
             this.lightMarkersDisplay();
 
 
-        if(this.gui.isKeyPressed("KeyW"))
-            this.carSpeed + SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0 < FORWARD_MAXSPEED ?
-                (this.carSpeed += SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0) : (this.carSpeed = FORWARD_MAXSPEED);
 
-        if(this.gui.isKeyPressed("KeyS"))
-            this.carSpeed - SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0 > -BACKWARD_MAXSPEED ?
-                (this.carSpeed -= SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0) : (this.carSpeed = -BACKWARD_MAXSPEED);
+        if (!this.crane.flagCar) {
 
-        if(this.gui.isKeyPressed("Space")) {
-            let nextSpeed = 0;
+            if(this.gui.isKeyPressed("KeyW"))
+                this.carSpeed + SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0 < FORWARD_MAXSPEED ?
+                    (this.carSpeed += SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0) : (this.carSpeed = FORWARD_MAXSPEED);
 
-            if(this.carSpeed > 0) {
-                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000.0));
+            if(this.gui.isKeyPressed("KeyS"))
+                this.carSpeed - SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0 > -BACKWARD_MAXSPEED ?
+                    (this.carSpeed -= SPEED_INCREMENT_SEC * UPDATE_MS / 1000.0) : (this.carSpeed = -BACKWARD_MAXSPEED);
 
-                if(nextSpeed < 0 || this.carSpeed < FORWARD_MAXSPEED*0.2)
-                    this.carSpeed = 0;
-                else
-                    this.carSpeed = nextSpeed;
+            if(this.gui.isKeyPressed("Space")) {
+                let nextSpeed = 0;
 
-            } else if(this.carSpeed < 0) {
-                nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000.0));
+                if(this.carSpeed > 0) {
+                    nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000.0));
 
-                if(nextSpeed > 0 || this.carSpeed > -FORWARD_MAXSPEED*0.2)
-                    this.carSpeed = 0;
-                else
-                    this.carSpeed = nextSpeed;
+                    if(nextSpeed < 0 || this.carSpeed < FORWARD_MAXSPEED*0.2)
+                        this.carSpeed = 0;
+                    else
+                        this.carSpeed = nextSpeed;
+
+                } else if(this.carSpeed < 0) {
+                    nextSpeed = this.carSpeed * (1 - (BRAKES_PERCENT_SEC * UPDATE_MS / 1000.0));
+
+                    if(nextSpeed > 0 || this.carSpeed > -FORWARD_MAXSPEED*0.2)
+                        this.carSpeed = 0;
+                    else
+                        this.carSpeed = nextSpeed;
+                }
+
             }
 
-        }
+            if(this.gui.isKeyPressed("KeyD")) {
+                let speedFactor;
+                if(this.carSpeed < 0)
+                    speedFactor = (-1 -0.75*this.carSpeed/BACKWARD_MAXSPEED);
+                else
+                    speedFactor = (1 - 0.5*this.carSpeed/FORWARD_MAXSPEED);
 
-        if(this.gui.isKeyPressed("KeyD")) {
-            let speedFactor;
-            if(this.carSpeed < 0)
-                speedFactor = (-1 -0.75*this.carSpeed/BACKWARD_MAXSPEED);
-            else
-                speedFactor = (1 - 0.5*this.carSpeed/FORWARD_MAXSPEED);
+                let nextAngle = this.vehicle.frontWheelsAngle - (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * speedFactor;
 
-            let nextAngle = this.vehicle.frontWheelsAngle - (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * speedFactor;
+                if(nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES || nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES)
+                    this.carSpeed < 0 ?
+                        this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + TURN_MAX_DEGREES :
+                        this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - TURN_MAX_DEGREES;
+                else
+                    this.vehicle.frontWheelsAngle = nextAngle;
+            }
 
-            if(nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES || nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES)
-                this.carSpeed < 0 ?
-                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + TURN_MAX_DEGREES :
-                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - TURN_MAX_DEGREES;
-            else
-                this.vehicle.frontWheelsAngle = nextAngle;
-        }
+            if(this.gui.isKeyPressed("KeyA")) {
+                let speedFactor;
+                if(this.carSpeed < 0)
+                    speedFactor = (-1 -0.75*this.carSpeed/BACKWARD_MAXSPEED);
+                else
+                    speedFactor = (1 - 0.5*this.carSpeed/FORWARD_MAXSPEED);
 
-        if(this.gui.isKeyPressed("KeyA")) {
-            let speedFactor;
-            if(this.carSpeed < 0)
-                speedFactor = (-1 -0.75*this.carSpeed/BACKWARD_MAXSPEED);
-            else
-                speedFactor = (1 - 0.5*this.carSpeed/FORWARD_MAXSPEED);
+                let nextAngle = this.vehicle.frontWheelsAngle + (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * speedFactor;
 
-            let nextAngle = this.vehicle.frontWheelsAngle + (TURN_WHEEL_DEGREE_SEC * UPDATE_MS / 1000.0) * speedFactor;
+                if(nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES || nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES)
+                    this.carSpeed < 0 ?
+                        this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - TURN_MAX_DEGREES :
+                        this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + TURN_MAX_DEGREES;
+                else
+                    this.vehicle.frontWheelsAngle = nextAngle;
+            }
 
-            if(nextAngle > this.vehicle.steerAngle + TURN_MAX_DEGREES || nextAngle < this.vehicle.steerAngle - TURN_MAX_DEGREES)
-                this.carSpeed < 0 ?
-                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle - TURN_MAX_DEGREES :
-                    this.vehicle.frontWheelsAngle = this.vehicle.steerAngle + TURN_MAX_DEGREES;
-            else
-                this.vehicle.frontWheelsAngle = nextAngle;
-        }
-
-        // Crane movement
-        if(this.gui.isKeyPressed("KeyR")) {
-          this.craneMoveDR = true;
+            // Crane movement
+            if(this.gui.isKeyPressed("KeyR")) {
+              this.craneMoveDR = true;
+            }
         }
     }
 
@@ -250,11 +254,11 @@ class LightingScene extends CGFscene {
     }
 
     update() {
-        if (!this.crane.flagCar) {
+        // if (!this.crane.flagCar) {
           // PL6 - 4.2
           this.checkKeys();
           this.handleCar();
-        }
+        // }
 
         // PL6 - 7.3
         this.handleCrane();
